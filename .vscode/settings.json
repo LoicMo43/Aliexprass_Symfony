@@ -1,0 +1,12 @@
+{
+    "sqltools.connections": [
+        {
+            "previewLimit": 50,
+            "driver": "SQLite",
+            "database": "${workspaceFolder:AliExprass}/var/aliexprass.db",
+            "name": "Aliexprass"
+        }
+    ],
+    "sqltools.useNodeRuntime": true,
+    "git.ignoreLimitWarning": true
+}
