@@ -11,6 +11,10 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method Product|null findOneBy(array $criteria, array $orderBy = null)
  * @method Product[]    findAll()
  * @method Product[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * @method findByIsBestSeller(int $int)
+ * @method findByIsSpecialOffer(int $int)
+ * @method findByIsNewArrival(int $int)
+ * @method findByIsFeatured(int $int)
  */
 class ProductRepository extends ServiceEntityRepository
 {

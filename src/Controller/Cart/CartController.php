@@ -20,12 +20,16 @@ class CartController extends AbstractController
     }
 
     /**
+     * Page du panier
      * @return Response
      */
     #[Route('/cart', name: 'cart')]
     public function index(): Response
     {
+        // On récupère tout le contenu du panier de l'utilisateur
         $cart = $this->cartServices->getFullCart();
+
+        // Si le panier est vide le rediriger vers l'accueil
         if (!isset($cart['products']))
         {
             return $this->redirectToRoute('home');
@@ -37,6 +41,7 @@ class CartController extends AbstractController
     }
 
     /**
+     * Ajout d'un article
      * @param $id
      * @return Response
      */
@@ -48,6 +53,7 @@ class CartController extends AbstractController
     }
 
     /**
+     * Suppression d'un article
      * @param $id
      * @return Response
      */
@@ -59,6 +65,7 @@ class CartController extends AbstractController
     }
 
     /**
+     * Suppression de tout le panier d'article
      * @param $id
      * @return Response
      */

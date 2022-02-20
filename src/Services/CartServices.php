@@ -22,6 +22,7 @@ class CartServices {
     }
 
     /**
+     * Ajout d'un article au panier
      * @param $id
      */
     public function addToCart($id): void
@@ -41,6 +42,7 @@ class CartServices {
     }
 
     /**
+     * Suppression d'un article au panier
      * @param $id
      */
     public function deleteFromCart($id): void
@@ -61,6 +63,7 @@ class CartServices {
     }
 
     /**
+     * Suppression de tous les produits du panier
      * @param $id
      */
     public function deleteAllToCart($id): void
@@ -73,12 +76,17 @@ class CartServices {
         $this->updateCart($cart);
     }
 
+    /**
+     * Suppression du panier
+     * @return void
+     */
     public function deleteCart(): void
     {
         $this->updateCart([]);
     }
 
     /**
+     * Mise a jour du panier
      * @param $cart
      */
     public function updateCart($cart): void
@@ -88,6 +96,7 @@ class CartServices {
     }
 
     /**
+     * Récupération du panier
      * @return mixed
      */
     public function getCart(): mixed
@@ -96,6 +105,7 @@ class CartServices {
     }
 
     /**
+     * Récupération du panier et des ses articles
      * @return array
      */
     public function getFullCart(): array

@@ -22,6 +22,7 @@ class OrderServices {
     }
 
     /**
+     * Création d'une commande
      * @param $cart
      * @return Order
      */
@@ -63,6 +64,7 @@ class OrderServices {
     }
 
     /**
+     * Sauvegarde du panier
      * @param $data
      * @param $user
      * @return string
@@ -112,6 +114,7 @@ class OrderServices {
     }
 
     /**
+     * Génération d'une ID de commande unique par commande
      * @return string
      */
     public function generateUuid(): string

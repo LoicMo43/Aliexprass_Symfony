@@ -15,7 +15,7 @@ services:
             - '../src/Kernel.php'
             - '../src/Tests/'
 
-    App\Service\CartServices:
+    App\Services\CartServices:
             autowire: true
 
     # add more service definitions when explicit configuration is needed

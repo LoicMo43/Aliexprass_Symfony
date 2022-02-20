@@ -24,6 +24,7 @@ class AddressController extends AbstractController
      */
     public function __construct(RequestStack $requestStack)
     {
+        // Injection du service RequestStack : permet de faire la recupération de la session
         $this->requestStack = $requestStack;
     }
 
@@ -40,6 +41,7 @@ class AddressController extends AbstractController
     }
 
     /**
+     * Création d'un formulaire "Nouvelle adresse"
      * @param Request $request
      * @param EntityManagerInterface $entityManager
      * @param CartServices $cartServices
@@ -58,12 +60,19 @@ class AddressController extends AbstractController
             /** @var User $user */
             $address->setUser($user);
             $entityManager->persist($address);
+            // Envoie en base de donnée
             $entityManager->flush();
+
+            /**
+             * Si le panier de l'utilisateur contient des articles,
+             * le rediriger directement sur la page 'checkout'
+             */
 
             if($cartServices->getFullCart()) {
                 return $this->redirectToRoute('checkout');
             }
 
+            // Sinon le rediriger sur la page 'account'
             return $this->redirectToRoute('account', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -86,6 +95,7 @@ class AddressController extends AbstractController
     }
 
     /**
+     * Modification de l'adresse
      * @param Request $request
      * @param Address $address
      * @param EntityManagerInterface $entityManager
@@ -100,6 +110,7 @@ class AddressController extends AbstractController
         if ($form->isSubmitted() && $form->isValid()) {
             $entityManager->flush();
 
+            // On récupére les données de checkout_data de la session
             if ($this->requestStack->getSession()->get('checkout_data')) {
                 $data = $this->requestStack->getSession()->get('checkout_data');
                 $data['address'] = $address;
@@ -117,6 +128,7 @@ class AddressController extends AbstractController
     }
 
     /**
+     * Suppression d'une adresse
      * @param Request $request
      * @param Address $address
      * @param EntityManagerInterface $entityManager

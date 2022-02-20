@@ -29,6 +29,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
+     * Formulaire d'inscription d'un utilisateur
      * @param Request $request
      * @param UserPasswordHasherInterface $userPasswordHasher
      * @param EntityManagerInterface $entityManager
@@ -42,7 +43,7 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // encode the plain password
+            // Hashage du mot de passe
             $user->setPassword(
                 $userPasswordHasher->hashPassword(
                     $user,
@@ -51,9 +52,10 @@ class RegistrationController extends AbstractController
             );
 
             $entityManager->persist($user);
+            // Envoie en base de donnée
             $entityManager->flush();
 
-            // generate a signed url and email it to the user
+            // Générer une url signée et l'envoyer par email à l'utilisateur
             $this->emailVerifier->sendEmailConfirmation(
                 'app_verify_email',
                 $user,
@@ -63,7 +65,6 @@ class RegistrationController extends AbstractController
                     ->subject('Please Confirm your Email')
                     ->htmlTemplate('registration/confirmation_email.html.twig')
             );
-            // do anything else you need here, like send an email
 
             return $this->redirectToRoute('home');
         }
@@ -74,6 +75,7 @@ class RegistrationController extends AbstractController
     }
 
     /**
+     * Confirmation de l'email
      * @param Request $request
      * @param UserRepository $userRepository
      * @return Response
@@ -93,7 +95,7 @@ class RegistrationController extends AbstractController
             return $this->redirectToRoute('app_register');
         }
 
-        // validate email confirmation link, sets User::isVerified=true and persists
+        // Valide le lien de confirmation de l'email, définit User::isVerified=true et persiste.
         try {
             $this->emailVerifier->handleEmailConfirmation($request, $user);
         } catch (VerifyEmailExceptionInterface $exception) {
