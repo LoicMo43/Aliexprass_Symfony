@@ -8,6 +8,9 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class StripeSuccessPaymentController extends AbstractController
 {
+    /**
+     * @return Response
+     */
     #[Route('/stripe-payment-success', name: 'stripe_payment_success')]
     public function index(): Response
     {

@@ -2,6 +2,10 @@
 
 {% block title %}Final Checkout AliExprass{% endblock %}
 
+{% block scriptStripe %}
+    <script src="https://js.stripe.com/v3/"></script>
+{% endblock scriptStripe %}
+
 {% block body %}
     {{ include("partials/title_section.html.twig", {'name':'Checkout'}) }}
     <div class="section">
@@ -79,7 +83,9 @@
                                 <h4>Payment</h4>
                             </div>
                         </div>
-                        <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Paid | ${{ cart.data.subTotalTTC + (carrier.price / 100) }} </button>
+                        <form action="{{ path('create_checkout_session') }}" method="POST">
+                            <button type="submit" id="checkout-button" class="btn btn-fill-out btn-block">Paid | ${{ cart.data.subTotalTTC + (carrier.price / 100) }} </button>
+                        </form>
                     </div>
                 </div>
             </div>

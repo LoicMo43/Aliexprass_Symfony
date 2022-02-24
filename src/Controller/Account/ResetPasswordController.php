@@ -84,7 +84,7 @@ class ResetPasswordController extends AbstractController
     public function reset(Request $request, UserPasswordHasherInterface $userPasswordHasher, string $token = null): Response
     {
         if ($token) {
-            // Nous stockons le 'token' en session et le supprimons de l'URL, afin d'éviter que l'URL soit
+            // On stocke le 'token' en session et le supprimons de l'URL, afin d'éviter que l'URL soit
             // chargé dans un navigateur et potentiellement la fuite du 'token' à une tierce partie de JavaScript.
             $this->storeTokenInSession($token);
 

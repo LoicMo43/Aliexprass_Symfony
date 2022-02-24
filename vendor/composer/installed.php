@@ -1,22 +1,22 @@
 <?php return array(
     'root' => array(
-        'pretty_version' => '1.0.0+no-version-set',
-        'version' => '1.0.0.0',
+        'pretty_version' => 'dev-master',
+        'version' => 'dev-master',
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => NULL,
+        'reference' => 'a4c882a4058adadbde556315651789344f484c1f',
         'name' => '__root__',
         'dev' => true,
     ),
     'versions' => array(
         '__root__' => array(
-            'pretty_version' => '1.0.0+no-version-set',
-            'version' => '1.0.0.0',
+            'pretty_version' => 'dev-master',
+            'version' => 'dev-master',
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => NULL,
+            'reference' => 'a4c882a4058adadbde556315651789344f484c1f',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -242,12 +242,12 @@
             'dev_requirement' => true,
         ),
         'phar-io/version' => array(
-            'pretty_version' => '3.1.1',
-            'version' => '3.1.1.0',
+            'pretty_version' => '3.2.1',
+            'version' => '3.2.1.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phar-io/version',
             'aliases' => array(),
-            'reference' => '15a90844ad40f127afd244c0cad228de2a80052a',
+            'reference' => '4f7fd7836c6f332bb2933569e566a0d6c4cbed74',
             'dev_requirement' => true,
         ),
         'php-http/async-client-implementation' => array(
@@ -308,12 +308,12 @@
             'dev_requirement' => false,
         ),
         'phpunit/php-code-coverage' => array(
-            'pretty_version' => '9.2.11',
-            'version' => '9.2.11.0',
+            'pretty_version' => '9.2.13',
+            'version' => '9.2.13.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/php-code-coverage',
             'aliases' => array(),
-            'reference' => '665a1ac0a763c51afc30d6d130dac0813092b17f',
+            'reference' => 'deac8540cb7bd40b2b8cfa679b76202834fd04e8',
             'dev_requirement' => true,
         ),
         'phpunit/php-file-iterator' => array(
@@ -353,12 +353,12 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.5.14',
-            'version' => '9.5.14.0',
+            'pretty_version' => '9.5.16',
+            'version' => '9.5.16.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
-            'reference' => '1883687169c017d6ae37c58883ca3994cfc34189',
+            'reference' => '5ff8c545a50226c569310a35f4fa89d79f1ddfdc',
             'dev_requirement' => true,
         ),
         'psr/cache' => array(
@@ -457,7 +457,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '6ba1494c9aaa556dc45e13eaab644a280ad76558',
+            'reference' => 'a9377ea39143741495fcbebecb2fcd1b45e5bc1a',
             'dev_requirement' => true,
         ),
         'sebastian/cli-parser' => array(
@@ -1310,21 +1310,21 @@
             'dev_requirement' => false,
         ),
         'symfonycasts/reset-password-bundle' => array(
-            'pretty_version' => 'v1.12.0',
-            'version' => '1.12.0.0',
+            'pretty_version' => 'v1.13.0',
+            'version' => '1.13.0.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfonycasts/reset-password-bundle',
             'aliases' => array(),
-            'reference' => 'ade9fad9f4355268aec1bd40773601f872a1672b',
+            'reference' => '6e926da7fb2031ef38a385a994ea3a52b436dc8c',
             'dev_requirement' => false,
         ),
         'symfonycasts/verify-email-bundle' => array(
-            'pretty_version' => 'v1.8.0',
-            'version' => '1.8.0.0',
+            'pretty_version' => 'v1.9.0',
+            'version' => '1.9.0.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../symfonycasts/verify-email-bundle',
             'aliases' => array(),
-            'reference' => 'aecd44697f7385178ff84a80f2b51d6318c15497',
+            'reference' => '1b843f75398f2ab44b1d282945988d635b87f561',
             'dev_requirement' => false,
         ),
         'theseer/tokenizer' => array(
