@@ -2,7 +2,8 @@
 
 namespace App\Controller\Stripe;
 
-use App\Services\CartServices;
+use App\Entity\Cart;
+use App\Services\OrderServices;
 use Stripe\Checkout\Session;
 use Stripe\Exception\ApiErrorException;
 use Stripe\Stripe;
@@ -15,31 +16,19 @@ class StripeCheckoutSessionController extends AbstractController
     /**
      * @throws ApiErrorException
      */
-    #[Route('/create-checkout-session', name: 'create_checkout_session')]
-    public function index(CartServices $cartServices): Response
+    #[Route('/create-checkout-session/{reference}', name: 'create_checkout_session')]
+    public function index(?Cart $cart, OrderServices $orderServices): Response
     {
-        $cart = $cartServices->getFullCart();
+        $user = $this->getUser();
+        if (!$cart) {return $this->redirectToRoute('home');}
+
+        $orderServices->createOrder($cart);
         Stripe::setApiKey($_ENV['STRIPE_SK']);
 
-        $line_items= [];
-        foreach($cart['products'] as $data_product) {
-            $product = $data_product['product'];
-            $line_items[] = [
-                'price_data' => [
-                    'currency' => 'usd',
-                    'unit_amount' => $product->getPrice(),
-                    'product_data' => [
-                        'name' => $product->getName(),
-                        'images' => [$_ENV['YOUR_DOMAIN'].'/uploads/products/'. $product->getImage()],
-                    ],
-                ],
-                'quantity' => $data_product['quantity'],
-            ];
-        }
-
         $checkout_session = Session::create([
-            'line_items' => $line_items,
+            'customer_email' => $user->getEmail(),
             'mode' => 'payment',
+            'line_items' => $orderServices->getLineItems($cart),
             'success_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-success',
             'cancel_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-cancel',
         ]);

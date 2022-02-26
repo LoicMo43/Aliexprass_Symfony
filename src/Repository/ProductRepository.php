@@ -15,6 +15,7 @@ use Doctrine\Persistence\ManagerRegistry;
  * @method findByIsSpecialOffer(int $int)
  * @method findByIsNewArrival(int $int)
  * @method findByIsFeatured(int $int)
+ * @method findOneByName($getProductName)
  */
 class ProductRepository extends ServiceEntityRepository
 {
