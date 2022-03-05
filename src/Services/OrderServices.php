@@ -34,11 +34,11 @@ class OrderServices {
     {
         $order = new Order();
         $order->setReference($cart->getReference())
-              ->setCarrierName($cart->getName())
-              ->setCarrierPrice($cart->getPrice())
+              ->setCarrierName($cart->getCarrierName())
+              ->setCarrierPrice($cart->getCarrierPrice())
               ->setFullName($cart->getFullName())
               ->setDeliveryAddress($cart->getDeliveryAddress())
-              ->setMoreInformations($cart->getInformations())
+              ->setMoreInformations($cart->getMoreInformations())
               ->setQuantity($cart->getQuantity())
               ->setSubTotalHT($cart->getSubTotalHT())
               ->setTaxe($cart->getTaxe())
