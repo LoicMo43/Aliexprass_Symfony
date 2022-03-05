@@ -3,7 +3,9 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Carrier;
+use App\Entity\Cart;
 use App\Entity\HomeSlider;
+use App\Entity\Order;
 use App\Entity\Product;
 use App\Entity\Categories;
 use Psr\Container\ContainerExceptionInterface;
@@ -43,6 +45,8 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
+        yield MenuItem::linkToCrud('Cart', 'fas fa-shopping-cart', Cart::class);
+        yield MenuItem::linkToCrud('Order', 'fas fa-boxes', Order::class);
         yield MenuItem::linkToCrud('Categories', 'fas fa-list', Categories::class);
         yield MenuItem::linkToCrud('Product', 'fas fa-shopping-cart', Product::class);
         yield MenuItem::linkToCrud('Carrier', 'fas fa-truck', Carrier::class);

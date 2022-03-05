@@ -360,11 +360,18 @@ class Order
         return $this;
     }
 
+    /**
+     * @return string|null
+     */
     public function getStripeCheckoutSessionId(): ?string
     {
         return $this->StripeCheckoutSessionId;
     }
 
+    /**
+     * @param string|null $StripeCheckoutSessionId
+     * @return $this
+     */
     public function setStripeCheckoutSessionId(?string $StripeCheckoutSessionId): self
     {
         $this->StripeCheckoutSessionId = $StripeCheckoutSessionId;
