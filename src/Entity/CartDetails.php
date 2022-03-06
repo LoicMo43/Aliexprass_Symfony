@@ -124,7 +124,7 @@ class CartDetails
      */
     public function getTaxe(): ?float
     {
-        return $this->taxe;
+        return $this->taxe*100;
     }
 
     /**

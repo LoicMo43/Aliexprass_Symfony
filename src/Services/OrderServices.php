@@ -108,7 +108,7 @@ class OrderServices {
         $line_items[] = [
             'price_data' => [
                 'currency' => 'usd',
-                'unit_amount' => $cart->getTaxe(),
+                'unit_amount' => $cart->getTaxe()*100,
                 'product_data' => [
                     'name' => 'TVA (20%)',
                     'images' => [$_ENV['YOUR_DOMAIN'].'/uploads/products/'],

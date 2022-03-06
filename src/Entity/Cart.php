@@ -305,7 +305,7 @@ class Cart
      */
     public function getSubTotalHT(): ?float
     {
-        return $this->subTotalHT*100;
+        return $this->subTotalHT;
     }
 
     /**
@@ -324,7 +324,7 @@ class Cart
      */
     public function getTaxe(): ?float
     {
-        return $this->taxe*100;
+        return $this->taxe;
     }
 
     /**
@@ -343,7 +343,7 @@ class Cart
      */
     public function getSubTotalTTC(): ?float
     {
-        return $this->subTotalTTC*100;
+        return $this->subTotalTTC;
     }
 
     /**

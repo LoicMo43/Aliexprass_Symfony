@@ -80,18 +80,6 @@ CREATE TABLE IF NOT EXISTS `cart` (
   CONSTRAINT `FK_AB912789A76ED395` FOREIGN KEY (`user_id`) REFERENCES `user` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table aliexprass.cart : ~8 rows (environ)
-/*!40000 ALTER TABLE `cart` DISABLE KEYS */;
-INSERT INTO `cart` (`id`, `user_id`, `reference`, `fullname`, `carrier_name`, `carrier_price`, `delivery_address`, `is_paid`, `created_at`, `more_informations`, `quantity`, `sub_total_ht`, `taxe`, `sub_total_ttc`) VALUES
-	(3, 1, '4331C8F0-FDFC-7B60-E7C2-D1409AE9A00B', 'Symfony Magnarde', 'Chronopost', 1500, 'Symfony Magnarde[spr]87 Avenue Maréchal Foch[spr]zeubi[spr]43000 - Le Puy-en-Velay[spr]FR[spr]', 0, '2022-02-07 19:47:24', NULL, 1, 39.99, 8, 62.99),
-	(4, 1, '4D367013-C270-5F01-724F-AE2332A8CD88', 'Symfony Magnarde', 'Chronopost', 1500, 'Symfony Magnarde[spr]87 Avenue Maréchal Foch[spr]zeubi[spr]43000 - Le Puy-en-Velay[spr]FR[spr]', 0, '2022-02-07 19:47:27', NULL, 1, 39.99, 8, 62.99),
-	(5, 1, 'F0F14D05-692E-7850-1BC9-409EC8FFD57D', 'Symfony Magnarde', 'Chronopost', 1500, 'Symfony Magnarde[spr]87 Avenue Maréchal Foch[spr]zeubi[spr]43000 - Le Puy-en-Velay[spr]FR[spr]', 0, '2022-02-07 19:48:29', NULL, 1, 39.99, 8, 62.99),
-	(9, 1, '43B4BDD9-CA6B-2570-F873-10770884E2AE', 'Symfony Magnarde', 'Chronopost', 1500, 'Symfony Magnarde[spr]87 Avenue Maréchal Foch[spr]zeubi[spr]43000 - Le Puy-en-Velay[spr]FR[spr]', 0, '2022-02-07 20:05:31', NULL, 1, 39.99, 8, 62.99),
-	(10, 1, '190B3EF9-4B84-08CD-990E-B0E1BC75413C', 'Symfony Magnarde', 'Chronopost', 1500, 'Symfony Magnarde[spr]87 Avenue Maréchal Foch[spr]zeubi[spr]43000 - Le Puy-en-Velay[spr]FR[spr]', 0, '2022-02-07 20:06:15', NULL, 1, 39.99, 8, 62.99),
-	(11, 1, '02DA791B-880E-48AC-7481-A4B007AB4887', 'Symfony Juliene', 'Chronopost', 1500, 'Symfony Juliene[spr]97 Boulevard du Web[spr][spr]75000 - Paris[spr]FR[spr]', 0, '2022-02-07 20:15:22', NULL, 1, 1999.99, 400, 2414.99),
-	(12, 1, '18C2B218-470D-3C31-949C-1151B013F6C3', 'Symfony Juliene', 'Chronopost', 1500, 'Symfony Juliene[spr]97 Boulevard du Web[spr][spr]75000 - Paris[spr]FR[spr]', 0, '2022-02-07 20:15:46', NULL, 1, 1999.99, 400, 2414.99),
-	(13, 1, 'DFFE7A5D-3548-5977-7067-59E358A6BE2A', 'Symfony Juliene', 'Chronopost', 1500, 'Symfony Juliene[spr]97 Boulevard du Web[spr][spr]75000 - Paris[spr]FR[spr]', 0, '2022-02-07 20:19:11', NULL, 2, 2069.98, 414, 2498.98);
-/*!40000 ALTER TABLE `cart` ENABLE KEYS */;
 
 -- Listage de la structure de la table aliexprass. cart_details
 CREATE TABLE IF NOT EXISTS `cart_details` (
@@ -108,19 +96,6 @@ CREATE TABLE IF NOT EXISTS `cart_details` (
   CONSTRAINT `FK_89FCC38DBCB5C6F5` FOREIGN KEY (`carts_id`) REFERENCES `cart` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- Listage des données de la table aliexprass.cart_details : ~9 rows (environ)
-/*!40000 ALTER TABLE `cart_details` DISABLE KEYS */;
-INSERT INTO `cart_details` (`id`, `carts_id`, `product_name`, `product_price`, `quantity`, `sub_total_ht`, `taxe`, `sub_total_ttc`) VALUES
-	(1, 3, 'Bonnets tricoté pour femmes', 39.99, 1, 39.99, 0, 47.988),
-	(2, 4, 'Bonnets tricoté pour femmes', 39.99, 1, 39.99, 0, 47.988),
-	(3, 5, 'Bonnets tricoté pour femmes', 39.99, 1, 39.99, 0, 47.988),
-	(4, 9, 'Bonnets tricoté pour femmes', 39.99, 1, 39.99, 0, 47.988),
-	(5, 10, 'Bonnets tricoté pour femmes', 39.99, 1, 39.99, 0, 47.988),
-	(6, 11, 'NVIDA RTX 3090 MSI special Kokane', 1999.99, 1, 1999.99, 0, 2399.988),
-	(7, 12, 'NVIDA RTX 3090 MSI special Kokane', 1999.99, 1, 1999.99, 0, 2399.988),
-	(8, 13, 'NVIDA RTX 3090 MSI special Kokane', 1999.99, 1, 1999.99, 0, 2399.988),
-	(9, 13, 'Bluetooth appel Fitness', 69.99, 1, 69.99, 0, 83.988);
-/*!40000 ALTER TABLE `cart_details` ENABLE KEYS */;
 
 -- Listage de la structure de la table aliexprass. categories
 CREATE TABLE IF NOT EXISTS `categories` (
@@ -150,16 +125,6 @@ CREATE TABLE IF NOT EXISTS `doctrine_migration_versions` (
   `execution_time` int(11) DEFAULT NULL,
   PRIMARY KEY (`version`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
--- Listage des données de la table aliexprass.doctrine_migration_versions : ~5 rows (environ)
-/*!40000 ALTER TABLE `doctrine_migration_versions` DISABLE KEYS */;
-INSERT INTO `doctrine_migration_versions` (`version`, `executed_at`, `execution_time`) VALUES
-	('DoctrineMigrations\\Version20220131134923', '2022-01-31 13:49:34', 292),
-	('DoctrineMigrations\\Version20220131201345', '2022-01-31 20:13:52', 312),
-	('DoctrineMigrations\\Version20220201181711', '2022-02-01 18:17:26', 35),
-	('DoctrineMigrations\\Version20220207193659', '2022-02-07 19:37:11', 372),
-	('DoctrineMigrations\\Version20220207222312', '2022-02-07 22:35:17', 30);
-/*!40000 ALTER TABLE `doctrine_migration_versions` ENABLE KEYS */;
 
 -- Listage de la structure de la table aliexprass. home_slider
 CREATE TABLE IF NOT EXISTS `home_slider` (
