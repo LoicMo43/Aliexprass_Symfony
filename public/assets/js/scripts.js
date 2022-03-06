@@ -1,6 +1,10 @@
 (function($) {
 	'use strict';
-	
+
+	$(document).ready(function() {
+		$('.js-categories-multiple').select2();
+	});
+
 	/*===================================*
 	01. LOADING JS
 	/*===================================*/
