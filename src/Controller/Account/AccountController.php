@@ -31,7 +31,11 @@ class AccountController extends AbstractController
     #[Route('/order/{id}', name: 'account_order_details')]
     public function show(?Order $order): Response
     {
-        if (!$order || $order->getUser() !== $this->getUser()) {
+        if (!$order->getIsPaid()) {
+            return $this->redirectToRoute("account");
+        }
+
+        if ($order->getUser() !== $this->getUser()) {
             return $this->redirectToRoute("home");
         }
 

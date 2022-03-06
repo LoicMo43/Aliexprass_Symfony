@@ -12,6 +12,7 @@ window.bootstrap = bootstrap;
 
 document.addEventListener('DOMContentLoaded', () => {
     App.createMainMenu();
+    App.createColorSchemeSelector();
     App.createLayoutResizeControls();
     App.createNavigationToggler();
     App.createSearchHighlight();
@@ -74,6 +75,36 @@ const App = (() => {
         });
     };
 
+    const createColorSchemeSelector = () => {
+        if (null === document.querySelector('.dropdown-appearance')) {
+            return;
+        }
+
+        const currentScheme = localStorage.getItem('ea/colorScheme') || 'auto';
+        const colorSchemeSelectors = document.querySelectorAll('.dropdown-appearance a[data-ea-color-scheme]');
+        const activeColorSchemeSelector = document.querySelector(`.dropdown-appearance a[data-ea-color-scheme="${ currentScheme }"]`);
+
+        colorSchemeSelectors.forEach((selector) => { selector.classList.remove('active') });
+        activeColorSchemeSelector.classList.add('active');
+
+        colorSchemeSelectors.forEach((selector) => {
+            selector.addEventListener('click', () => {
+                const selectedColorScheme = selector.getAttribute('data-ea-color-scheme');
+                const resolvedColorScheme = 'auto' === selectedColorScheme
+                    ? matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
+                    : selectedColorScheme;
+
+                document.body.classList.remove('ea-light-scheme', 'ea-dark-scheme');
+                document.body.classList.add('light' === resolvedColorScheme ? 'ea-light-scheme' : 'ea-dark-scheme');
+                localStorage.setItem('ea/colorScheme', selectedColorScheme);
+                document.body.style.colorScheme = resolvedColorScheme;
+
+                colorSchemeSelectors.forEach((otherSelector) => { otherSelector.classList.remove('active') });
+                selector.classList.add('active');
+            });
+        });
+    };
+
     const createLayoutResizeControls = () => {
         const sidebarResizerHandler = document.getElementById('sidebar-resizer-handler');
         if (null !== sidebarResizerHandler) {
@@ -98,7 +129,7 @@ const App = (() => {
                 localStorage.setItem('ea/content/width', newValue);
             });
         }
-    }
+    };
 
     const createNavigationToggler = () => {
         const toggler = document.querySelector('#navigation-toggler');
@@ -229,6 +260,7 @@ const App = (() => {
     };
 
     const createBatchActions = () => {
+        let lastUpdatedRowCheckbox = null;
         const selectAllCheckbox = document.querySelector('.form-batch-checkbox-all');
         if (null === selectAllCheckbox) {
             return;
@@ -250,9 +282,29 @@ const App = (() => {
             });
         }
 
-        rowCheckboxes.forEach((rowCheckbox) => {
+        rowCheckboxes.forEach((rowCheckbox, rowCheckboxIndex) => {
+            rowCheckbox.dataset.rowIndex = rowCheckboxIndex;
+
+            rowCheckbox.addEventListener('click', (e) => {
+                if (lastUpdatedRowCheckbox && e.shiftKey) {
+                    const lastIndex = parseInt(lastUpdatedRowCheckbox.dataset.rowIndex);
+                    const currentIndex = parseInt(e.target.dataset.rowIndex);
+                    const valueToApply = e.target.checked;
+                    const lowest = Math.min(lastIndex, currentIndex);
+                    const highest = Math.max(lastIndex, currentIndex);
+
+                    rowCheckboxes.forEach((rowCheckbox2, rowCheckboxIndex2) => {
+                        if (lowest <= rowCheckboxIndex2 && rowCheckboxIndex2 <= highest) {
+                            rowCheckbox2.checked = valueToApply;
+                            rowCheckbox2.dispatchEvent(new Event('change'));
+                        }
+                    });
+                }
+                lastUpdatedRowCheckbox = e.target;
+            });
+
             rowCheckbox.addEventListener('change', () => {
-                const selectedRowCheckboxes =  document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
+                const selectedRowCheckboxes = document.querySelectorAll('input[type="checkbox"].form-batch-checkbox:checked');
                 const row = rowCheckbox.closest('tr');
                 const content = rowCheckbox.closest('.content');
 
@@ -603,6 +655,7 @@ const App = (() => {
 
     return {
         createMainMenu: createMainMenu,
+        createColorSchemeSelector: createColorSchemeSelector,
         createLayoutResizeControls: createLayoutResizeControls,
         createNavigationToggler: createNavigationToggler,
         createSearchHighlight: createSearchHighlight,

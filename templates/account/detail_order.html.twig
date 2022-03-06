@@ -28,7 +28,8 @@
                             {% for element in order.orderDetails %}
                                 <tr>
                                     <td class="product-thumbnail">{{ element.id }}</td>
-                                    <td class="product-name" data-title="Product"><a href="#">{{ element.productName }}</a></td>
+                                    <td class="product-name" data-title="Product"><a
+                                                href="#">{{ element.productName }}</a></td>
                                     <td class="product-price" data-title="Price">${{ element.productPrice }}</td>
                                     <td class="product-quantity" data-title="Quantity">{{ element.quantity }}</td>
                                     <td class="product-subtotal" data-title="Total">${{ element.subTotalHT }}</td>
@@ -60,10 +61,7 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-6">
-
-
-                </div>
+                <div class="col-md-6"></div>
                 <div class="col-md-6">
                     <div class="border p-3 p-md-4">
                         <div class="heading_s1 mb-3">
@@ -74,15 +72,15 @@
                                 <tbody>
                                 <tr>
                                     <td class="cart_total_label">Order Subtotal HT</td>
-                                    <td class="cart_total_amount">{{ order.subTotalHT}}</td>
+                                    <td class="cart_total_amount">${{ order.subTotalHT }}</td>
                                 </tr>
                                 <tr>
                                     <td class="cart_total_label">Taxe (20%)</td>
-                                    <td class="cart_total_amount">{{ order.taxe}}</td>
+                                    <td class="cart_total_amount">${{ order.taxe }}</td>
                                 </tr>
                                 <tr>
                                     <td class="cart_total_label">Total TTC</td>
-                                    <td class="cart_total_amount"><strong>{{ order.subTotalTTC}}</strong></td>
+                                    <td class="cart_total_amount"><strong>${{ order.subTotalTTC }}</strong></td>
                                 </tr>
                                 </tbody>
                             </table>
