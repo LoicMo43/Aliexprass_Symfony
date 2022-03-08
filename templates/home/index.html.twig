@@ -45,6 +45,7 @@
                                         {{ include('partials/product.html.twig',{'product': product}) }}
                                     {% endfor %}
                                 </div>
+                                {{ knp_pagination_render(productNewArrival, 'partials/pagination.html.twig')}}
                             </div>
                             <div class="tab-pane fade" id="sellers" role="tabpanel" aria-labelledby="sellers-tab">
                                 <div class="row shop_container">
@@ -52,6 +53,7 @@
                                         {{ include('partials/product.html.twig',{'product': product}) }}
                                     {% endfor %}
                                 </div>
+                                {{ knp_pagination_render(productBestSeller, 'partials/pagination.html.twig')}}
                             </div>
                             <div class="tab-pane fade" id="featured" role="tabpanel" aria-labelledby="featured-tab">
                                 <div class="row shop_container">
@@ -59,6 +61,7 @@
                                         {{ include('partials/product.html.twig',{'product': product}) }}
                                     {% endfor %}
                                 </div>
+                                {{ knp_pagination_render(productFeatured, 'partials/pagination.html.twig')}}
                             </div>
                             <div class="tab-pane fade" id="specialoffer" role="tabpanel" aria-labelledby="specialoffer-tab">
                                 <div class="row shop_container">
@@ -66,6 +69,7 @@
                                         {{ include('partials/product.html.twig',{'product': product}) }}
                                     {% endfor %}
                                 </div>
+                                {{ knp_pagination_render(productSpecialOffer, 'partials/pagination.html.twig')}}
                             </div>
                         </div>
                     </div>

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => 'fc8a5692c1d4f1093815299496f7b5988f009c18',
+        'reference' => '2963576804f8e8d7ff15457404abe3fdabf37eb8',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => 'fc8a5692c1d4f1093815299496f7b5988f009c18',
+            'reference' => '2963576804f8e8d7ff15457404abe3fdabf37eb8',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -190,6 +190,24 @@
             'reference' => 'c828ced1f932094ab79e4120a106a666565e4d9c',
             'dev_requirement' => false,
         ),
+        'knplabs/knp-components' => array(
+            'pretty_version' => 'v3.5.0',
+            'version' => '3.5.0.0',
+            'type' => 'library',
+            'install_path' => __DIR__ . '/../knplabs/knp-components',
+            'aliases' => array(),
+            'reference' => '755b0d10902a7db5dc654e9af86a7dcb9c7c5b7d',
+            'dev_requirement' => false,
+        ),
+        'knplabs/knp-paginator-bundle' => array(
+            'pretty_version' => 'v5.8.0',
+            'version' => '5.8.0.0',
+            'type' => 'symfony-bundle',
+            'install_path' => __DIR__ . '/../knplabs/knp-paginator-bundle',
+            'aliases' => array(),
+            'reference' => '216b9d5708001788321916c5b7632da9fb9ef6ca',
+            'dev_requirement' => false,
+        ),
         'laminas/laminas-code' => array(
             'pretty_version' => '4.5.1',
             'version' => '4.5.1.0',
@@ -353,12 +371,12 @@
             'dev_requirement' => true,
         ),
         'phpunit/phpunit' => array(
-            'pretty_version' => '9.5.17',
-            'version' => '9.5.17.0',
+            'pretty_version' => '9.5.18',
+            'version' => '9.5.18.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../phpunit/phpunit',
             'aliases' => array(),
-            'reference' => '5c5abcfaa2cbd44b2203995d7a339ef910fe0c8f',
+            'reference' => '1b5856028273bfd855e60a887278857d872ec67a',
             'dev_requirement' => true,
         ),
         'psr/cache' => array(
@@ -457,7 +475,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '6c48c3048166dc4142a1a5f28a325faed3a578a3',
+            'reference' => '2abd838b3415b8b377eb8da419c80f5ec4a35be6',
             'dev_requirement' => true,
         ),
         'sebastian/cli-parser' => array(
