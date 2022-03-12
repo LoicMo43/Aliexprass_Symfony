@@ -2,6 +2,7 @@
 
 namespace App\Controller\Shop;
 
+use App\Entity\SearchProduct;
 use App\Form\SearchProductType;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -22,14 +23,21 @@ class ShopController extends AbstractController
     public function shop(ProductRepository $repoProduct, Request $request, PaginatorInterface $paginator): Response
     {
         $products = $repoProduct->findAll();
+        $search = new SearchProduct();
+
+        $form = $this->createForm(SearchProductType::class, $search);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $products = $repoProduct->findWithSearch($search);
+        }
 
         $products = $paginator->paginate(
             $products, // On passe les données
             $request->query->getInt('page', 1), // Numéro de la page en cours
             12
         );
-
-        $form = $this->createForm(SearchProductType::class, null);
 
         return $this->render('shop/shop.html.twig', [
             'products' => $products,

@@ -5,7 +5,7 @@
         'type' => 'project',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
-        'reference' => '633559110b013acd7a7ce871bb7e7a36658a4114',
+        'reference' => 'f1c53c72ffa5035c9dad68a5bcb0c932c65674c6',
         'name' => '__root__',
         'dev' => true,
     ),
@@ -16,7 +16,7 @@
             'type' => 'project',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),
-            'reference' => '633559110b013acd7a7ce871bb7e7a36658a4114',
+            'reference' => 'f1c53c72ffa5035c9dad68a5bcb0c932c65674c6',
             'dev_requirement' => false,
         ),
         'doctrine/annotations' => array(
@@ -56,12 +56,12 @@
             'dev_requirement' => false,
         ),
         'doctrine/dbal' => array(
-            'pretty_version' => '3.3.2',
-            'version' => '3.3.2.0',
+            'pretty_version' => '3.3.3',
+            'version' => '3.3.3.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/dbal',
             'aliases' => array(),
-            'reference' => '35eae239ef515d55ebb24e9d4715cad09a4f58ed',
+            'reference' => '82331b861727c15b1f457ef05a8729e508e7ead5',
             'dev_requirement' => false,
         ),
         'doctrine/deprecations' => array(
@@ -137,12 +137,12 @@
             'dev_requirement' => false,
         ),
         'doctrine/orm' => array(
-            'pretty_version' => '2.11.1',
-            'version' => '2.11.1.0',
+            'pretty_version' => '2.11.2',
+            'version' => '2.11.2.0',
             'type' => 'library',
             'install_path' => __DIR__ . '/../doctrine/orm',
             'aliases' => array(),
-            'reference' => '4b88ce787d3916c8366abf52f6c658a7a27ed3a6',
+            'reference' => '9c351e044478135aec1755e2c0c0493a4b6309db',
             'dev_requirement' => false,
         ),
         'doctrine/persistence' => array(
@@ -164,12 +164,12 @@
             'dev_requirement' => false,
         ),
         'easycorp/easyadmin-bundle' => array(
-            'pretty_version' => 'v4.0.8',
-            'version' => '4.0.8.0',
+            'pretty_version' => 'v4.0.9',
+            'version' => '4.0.9.0',
             'type' => 'symfony-bundle',
             'install_path' => __DIR__ . '/../easycorp/easyadmin-bundle',
             'aliases' => array(),
-            'reference' => '48e9d2156306360ebad93840d39e48005a33f9c8',
+            'reference' => 'a582d4590499eab9832cb684c5da61882c92aa73',
             'dev_requirement' => false,
         ),
         'egulias/email-validator' => array(
@@ -475,7 +475,7 @@
             'aliases' => array(
                 0 => '9999999-dev',
             ),
-            'reference' => '2abd838b3415b8b377eb8da419c80f5ec4a35be6',
+            'reference' => 'cd0f4e10053eb11a7fb4bf2b19545cecb6655139',
             'dev_requirement' => true,
         ),
         'sebastian/cli-parser' => array(
