@@ -9,37 +9,72 @@
         "./app.js"
       ]
     },
-    "form-type-code-editor": {
+    "form": {
+      "js": [
+        "./form.js"
+      ]
+    },
+    "page-layout": {
+      "js": [
+        "./page-layout.js"
+      ]
+    },
+    "page-color-scheme": {
+      "js": [
+        "./page-color-scheme.js"
+      ]
+    },
+    "field-boolean": {
+      "js": [
+        "./field-boolean.js"
+      ]
+    },
+    "field-code-editor": {
       "css": [
-        "./form-type-code-editor.css",
-        "./form-type-code-editor.rtl.css"
+        "./field-code-editor.css",
+        "./field-code-editor.rtl.css"
       ],
       "js": [
-        "./form-type-code-editor.js"
+        "./field-code-editor.js"
       ]
     },
-    "form-type-text-editor": {
+    "field-collection": {
+      "js": [
+        "./field-collection.js"
+      ]
+    },
+    "field-file-upload": {
+      "js": [
+        "./field-file-upload.js"
+      ]
+    },
+    "field-image": {
+      "js": [
+        "./field-image.js"
+      ]
+    },
+    "field-slug": {
+      "js": [
+        "./field-slug.js"
+      ]
+    },
+    "field-textarea": {
+      "js": [
+        "./field-textarea.js"
+      ]
+    },
+    "field-text-editor": {
       "css": [
-        "./form-type-text-editor.css",
-        "./form-type-text-editor.rtl.css"
+        "./field-text-editor.css",
+        "./field-text-editor.rtl.css"
       ],
       "js": [
-        "./form-type-text-editor.js"
+        "./field-text-editor.js"
       ]
     },
-    "form-type-collection": {
+    "login": {
       "js": [
-        "./form-type-collection.js"
-      ]
-    },
-    "form-type-slug": {
-      "js": [
-        "./form-type-slug.js"
-      ]
-    },
-    "form-type-textarea": {
-      "js": [
-        "./form-type-textarea.js"
+        "./login.js"
       ]
     }
   }
