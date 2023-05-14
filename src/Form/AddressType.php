@@ -10,7 +10,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class AddressType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder,
+                              array $options): void
     {
         $builder
             ->add('fullname')
@@ -23,6 +29,10 @@ class AddressType extends AbstractType
             ->add('country', CountryType::class); // CountryType permet de lister tous les pays du monde
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

@@ -18,7 +18,9 @@ class StripeCheckoutSessionController extends AbstractController
      * @throws ApiErrorException
      */
     #[Route('/create-checkout-session/{reference}', name: 'create_checkout_session')]
-    public function index(?Cart $cart, OrderServices $orderServices, EntityManagerInterface $manager): Response
+    public function index(?Cart $cart,
+                          OrderServices $orderServices,
+                          EntityManagerInterface $manager): Response
     {
         $user = $this->getUser();
         if (!$cart) {return $this->redirectToRoute('home');}

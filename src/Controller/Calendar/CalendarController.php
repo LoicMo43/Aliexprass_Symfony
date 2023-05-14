@@ -14,6 +14,10 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/calendar')]
 class CalendarController extends AbstractController
 {
+    /**
+     * @param CalendarRepository $calendarRepository
+     * @return Response
+     */
     #[Route('/', name: 'calendar_index', methods: ['GET'])]
     public function index(CalendarRepository $calendarRepository): Response
     {
@@ -22,8 +26,14 @@ class CalendarController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/new', name: 'calendar_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request,
+                        EntityManagerInterface $entityManager): Response
     {
         $calendar = new Calendar();
         $form = $this->createForm(CalendarType::class, $calendar);
@@ -42,6 +52,10 @@ class CalendarController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Calendar $calendar
+     * @return Response
+     */
     #[Route('/{id}', name: 'calendar_show', methods: ['GET'])]
     public function show(Calendar $calendar): Response
     {
@@ -50,8 +64,16 @@ class CalendarController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Calendar $calendar
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/{id}/edit', name: 'calendar_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Calendar $calendar, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request,
+                         Calendar $calendar,
+                         EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(CalendarType::class, $calendar);
         $form->handleRequest($request);
@@ -68,8 +90,16 @@ class CalendarController extends AbstractController
         ]);
     }
 
+    /**
+     * @param Request $request
+     * @param Calendar $calendar
+     * @param EntityManagerInterface $entityManager
+     * @return Response
+     */
     #[Route('/{id}', name: 'calendar_delete', methods: ['POST'])]
-    public function delete(Request $request, Calendar $calendar, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request,
+                           Calendar $calendar,
+                           EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$calendar->getId(), $request->request->get('_token'))) {
             $entityManager->remove($calendar);

@@ -7,7 +7,9 @@
                 </a>
                 <div class="product_action_box">
                     <ul class="list_none pr_action_btn">
-                        <li class="add-to-cart"><a href="{{ path('cart_add', {'id': product.id}) }}"><i class="icon-basket-loaded"></i> Add To Cart</a></li>
+                        {% if product.quantity > 0 %}
+                            <li class="add-to-cart"><a href="{{ path('cart_add', {'id': product.id}) }}"><i class="icon-basket-loaded"></i> Add To Cart</a></li>
+                        {% endif %}
                         <li><a href=""><i class="icon-shuffle"></i></a></li>
                         <li><a href="{{ path('product_details', {'slug': product.slug}) }}" class=""><i class="icon-magnifier-add"></i></a></li>
                         <li><a href="#"><i class="icon-heart"></i></a></li>
@@ -28,6 +30,13 @@
                         <div class="product_rate" style="width:80%"></div>
                     </div>
                     <span class="rating_num">{{ product.reviewsProducts | length }}</span>
+                </div>
+                <div class="rating_wrap">
+                    {% if product.quantity > 0 %}
+                        <span class="avaibility">EN STOCK</span>
+                    {% else %}
+                        <span class="avaibility">HORS STOCK</span>
+                    {% endif %}
                 </div>
                 <div class="pr_desc">
                     <p>{{ product.description }}</p>

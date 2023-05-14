@@ -12,7 +12,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class CheckoutType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder,
+                              array $options): void
     {
         $user = $options['user'];
         $builder
@@ -35,6 +41,10 @@ class CheckoutType extends AbstractType
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

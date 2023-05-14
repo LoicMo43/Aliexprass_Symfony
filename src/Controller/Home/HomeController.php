@@ -21,7 +21,10 @@ class HomeController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'home')]
-    public function index(ProductRepository $repoProduct, HomeSliderRepository $repoHomeSlider, Request $request, PaginatorInterface $paginator): Response
+    public function index(ProductRepository $repoProduct,
+                          HomeSliderRepository $repoHomeSlider,
+                          Request $request,
+                          PaginatorInterface $paginator): Response
     {
         $homeSlider = $repoHomeSlider->findBy(
             [

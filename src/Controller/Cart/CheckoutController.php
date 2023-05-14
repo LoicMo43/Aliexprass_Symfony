@@ -14,14 +14,15 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CheckoutController extends AbstractController
 {
-    private $cartServices;
-    private $requestStack;
+    private CartServices $cartServices;
+    private RequestStack $requestStack;
 
     /**
      * @param CartServices $cartServices
      * @param RequestStack $requestStack
      */
-    public function __construct(CartServices $cartServices, RequestStack $requestStack)
+    public function __construct(CartServices $cartServices,
+                                RequestStack $requestStack)
     {
         // Injection des services : cartServices et requestStack
         $this->cartServices = $cartServices;
@@ -73,7 +74,8 @@ class CheckoutController extends AbstractController
      * @return Response
      */
     #[Route('/checkout/confirm', name: 'checkout_confirm')]
-    public function confirm(Request $request, OrderServices $orderServices): Response
+    public function confirm(Request $request,
+                            OrderServices $orderServices): Response
     {
         // Récupération de tout le panier
         /** @var User $user */

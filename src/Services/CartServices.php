@@ -7,25 +7,26 @@ use Symfony\Component\HttpFoundation\RequestStack;
 
 class CartServices {
 
-    private $repoProduct;
-    private $requestStack;
-    private $tva = 0.2;
+    private ProductRepository $repoProduct;
+    private RequestStack $requestStack;
+    private float $tva = 0.2;
 
     /**
      * @param ProductRepository $repoProduct
      * @param RequestStack $requestStack
      */
 
-    public function __construct(ProductRepository $repoProduct, RequestStack $requestStack) {
+    public function __construct(ProductRepository $repoProduct,
+                                RequestStack $requestStack) {
         $this->requestStack = $requestStack;
         $this->repoProduct = $repoProduct;
     }
 
     /**
      * Ajout d'un article au panier
-     * @param $id
+     * @param int $id
      */
-    public function addToCart($id): void
+    public function addToCart(int $id): void
     {
         $cart = $this->getCart();
 
@@ -43,9 +44,9 @@ class CartServices {
 
     /**
      * Suppression d'un article au panier
-     * @param $id
+     * @param int $id
      */
-    public function deleteFromCart($id): void
+    public function deleteFromCart(int $id): void
     {
         $cart = $this->getCart();
 
@@ -64,9 +65,9 @@ class CartServices {
 
     /**
      * Suppression de tous les produits du panier
-     * @param $id
+     * @param int $id
      */
-    public function deleteAllToCart($id): void
+    public function deleteAllToCart(int $id): void
     {
         $cart = $this->getCart();
 
@@ -120,6 +121,12 @@ class CartServices {
             $product = $this->repoProduct->find($id);
             if ($product) {
                 // Produit récupéré avec succès
+                if ($quantity > $product->getQuantity()) {
+                    $quantity = $product->getQuantity();
+                    $cart[$id] = $quantity;
+                    $this->updateCart($cart);
+                }
+
                 $fullCart['products'][] =
                 [
                     "quantity" => $quantity,

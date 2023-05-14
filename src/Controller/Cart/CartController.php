@@ -9,7 +9,7 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class CartController extends AbstractController
 {
-    private $cartServices;
+    private CartServices $cartServices;
 
     /**
      * @param CartServices $cartServices

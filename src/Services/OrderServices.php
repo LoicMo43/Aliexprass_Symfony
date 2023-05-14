@@ -13,14 +13,15 @@ use JetBrains\PhpStorm\Pure;
 
 class OrderServices {
 
-    private $manager;
-    private $repoProduct;
+    private EntityManagerInterface $manager;
+    private ProductRepository $repoProduct;
 
     /**
      * @param EntityManagerInterface $manager
      * @param ProductRepository $repoProduct
      */
-    public function __construct(EntityManagerInterface $manager,ProductRepository $repoProduct) {
+    public function __construct(EntityManagerInterface $manager,
+                                ProductRepository $repoProduct) {
         $this->manager = $manager;
         $this->repoProduct = $repoProduct;
     }
@@ -125,7 +126,7 @@ class OrderServices {
      * @param $user
      * @return string
      */
-    #[Pure] public function saveCart($data, $user): string
+    public function saveCart($data, $user): string
     {
         $cart = new Cart();
         $reference = $this->generateUuid();

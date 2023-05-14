@@ -17,7 +17,7 @@ use Symfony\Component\Routing\Annotation\Route;
 #[Route('/address')]
 class AddressController extends AbstractController
 {
-    private $requestStack;
+    private RequestStack $requestStack;
 
     /**
      * @param RequestStack $requestStack
@@ -48,7 +48,9 @@ class AddressController extends AbstractController
      * @return Response
      */
     #[Route('/new', name: 'address_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager, CartServices $cartServices): Response
+    public function new(Request $request,
+                        EntityManagerInterface $entityManager,
+                        CartServices $cartServices): Response
     {
         $address = new Address();
         $form = $this->createForm(AddressType::class, $address);
@@ -135,7 +137,9 @@ class AddressController extends AbstractController
      * @return Response
      */
     #[Route('/{id}', name: 'address_delete', methods: ['POST'])]
-    public function delete(Request $request, Address $address, EntityManagerInterface $entityManager): Response
+    public function delete(Request $request,
+                           Address $address,
+                           EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete' . $address->getId(), $request->request->get('_token'))) {
             $entityManager->remove($address);

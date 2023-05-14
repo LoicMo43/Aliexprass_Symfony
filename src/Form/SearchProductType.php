@@ -12,7 +12,13 @@ use Symfony\Component\OptionsResolver\OptionsResolver;
 
 class SearchProductType extends AbstractType
 {
-    public function buildForm(FormBuilderInterface $builder, array $options): void
+    /**
+     * @param FormBuilderInterface $builder
+     * @param array $options
+     * @return void
+     */
+    public function buildForm(FormBuilderInterface $builder,
+                              array $options): void
     {
         $builder
             ->add('categories', EntityType::class, [
@@ -48,6 +54,10 @@ class SearchProductType extends AbstractType
         ;
     }
 
+    /**
+     * @param OptionsResolver $resolver
+     * @return void
+     */
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([

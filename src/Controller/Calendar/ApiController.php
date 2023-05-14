@@ -18,10 +18,16 @@ use Symfony\Component\Routing\Annotation\Route;
  */
 class ApiController extends AbstractController
 {
+    /**
+     * @param EntityManagerInterface $manager
+     */
     public function __construct(EntityManagerInterface $manager) {
         $this->manager = $manager;
     }
 
+    /**
+     * @return Response
+     */
     #[Route('/api', name: 'api')]
     public function index(): Response
     {
@@ -39,13 +45,14 @@ class ApiController extends AbstractController
      * @throws Exception
      * @Route("/api/{id}/edit", name="api_event_edit", methods={"PUT"})
      */
-    public function majEvent(?Calendar $calendar, Request $request, ManagerRegistry $doctrine): Response
+    public function majEvent(?Calendar $calendar,
+                             Request $request,
+                             ManagerRegistry $doctrine): Response
     {
         // On récupère les données
         $donnees = json_decode($request->getContent(), false, 512, JSON_THROW_ON_ERROR);
 
-        if(
-            isset($donnees->title, $donnees->start, $donnees->description, $donnees->backgroundColor, $donnees->borderColor, $donnees->textColor)
+        if(isset($donnees->title, $donnees->start, $donnees->description, $donnees->backgroundColor, $donnees->borderColor, $donnees->textColor)
             && !empty($donnees->title)
             && !empty($donnees->start)
             && !empty($donnees->description)

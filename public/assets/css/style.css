@@ -4935,6 +4935,12 @@ footer .widget_title {
     vertical-align: middle;
     display: inline-block;
 }
+
+.avaibility {
+	vertical-align: middle;
+	display: inline-block;
+}
+
 .rating_wrap .rating {
     overflow: hidden;
     position: relative;
