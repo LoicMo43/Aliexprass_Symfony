@@ -115,7 +115,7 @@
                                  {% if (app.session.get('cart')) %}
                                     {% for element in app.session.get('cartData').products %}
                                         <li>
-                                            <a href="{{ path('cart_delete_all', {'id': element.product.id}) }}" class="item_remove"><i class="ion-close"></i></a>
+                                            <a href="{{ path('cart_delete', {'id': element.product.id}) }}" class="item_remove"><i class="ion-close"></i></a>
                                             <a href="#"><img src="/assets/uploads/products/{{ element.product.image }}" alt="{{ element.product.name }}">{{ element.product.name }}</a>
                                             <span class="cart_quantity"> {{ element.quantity }} x <span class="cart_amount"> <span class="price_symbole">$</span></span>{{ element.product.price / 100 }}</span>
                                         </li>
