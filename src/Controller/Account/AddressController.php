@@ -35,6 +35,7 @@ class AddressController extends AbstractController
     #[Route('/', name: 'address_index', methods: ['GET'])]
     public function index(AddressRepository $addressRepository): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         return $this->render('address/index.html.twig', [
             'addresses' => $addressRepository->findAll(),
         ]);

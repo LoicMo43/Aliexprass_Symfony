@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/checkout')]
 class CheckoutController extends AbstractController
 {
     private CartServices $cartServices;
@@ -33,9 +34,10 @@ class CheckoutController extends AbstractController
      * Page de checkout
      * @return Response
      */
-    #[Route('/checkout', name: 'checkout')]
+    #[Route('/', name: 'checkout')]
     public function index(): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         // Récupération de utilisateur actuel et de tout son panier
         /** @var User $user */
         $user = $this->getUser();
@@ -73,7 +75,7 @@ class CheckoutController extends AbstractController
      * @param OrderServices $orderServices
      * @return Response
      */
-    #[Route('/checkout/confirm', name: 'checkout_confirm')]
+    #[Route('/confirm', name: 'checkout_confirm')]
     public function confirm(Request $request,
                             OrderServices $orderServices): Response
     {
@@ -139,7 +141,7 @@ class CheckoutController extends AbstractController
     /**
      * @return Response
      */
-    #[Route('/checkout/edit', name: 'checkout_edit')]
+    #[Route('/edit', name: 'checkout_edit')]
     public function checkoutEdit(): Response {
         $this->requestStack->getSession()->set('checkout_data', []);
         return $this->redirectToRoute('checkout');

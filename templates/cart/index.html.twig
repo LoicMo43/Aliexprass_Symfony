@@ -40,7 +40,7 @@
                                         </div>
                                     </td>
                                     <td class="product-subtotal" data-title="Total">{{ element.quantity * element.product.price / 100 }}</td>
-                                    <td class="product-remove" data-title="Remove"><a href="{{ path('cart_delete_all', {'id': element.product.id}) }}"><i class="ti-close"></i></a>
+                                    <td class="product-remove" data-title="Remove"><a href="{{ path('cart_delete', {'id': element.product.id}) }}"><i class="ti-close"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}

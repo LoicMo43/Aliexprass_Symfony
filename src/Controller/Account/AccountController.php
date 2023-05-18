@@ -18,6 +18,7 @@ class AccountController extends AbstractController
     #[Route('/', name: 'account')]
     public function index(OrderRepository $repoOrder): Response
     {
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
         $orders = $repoOrder->findBy(['isPaid' => true, 'user' => $this->getUser()], ['id' => 'DESC']);
         return $this->render('account/index.html.twig', [
             'orders' => $orders,
