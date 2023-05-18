@@ -9,6 +9,8 @@ use App\Repository\AddressRepository;
 use App\Services\CartServices;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
@@ -79,7 +81,7 @@ class AddressController extends AbstractController
             return $this->redirectToRoute('account', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('address/new.html.twig', [
+        return $this->render('address/new.html.twig', [
             'address' => $address,
             'form' => $form,
         ]);
@@ -124,7 +126,7 @@ class AddressController extends AbstractController
             return $this->redirectToRoute('account', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('address/edit.html.twig', [
+        return $this->render('address/edit.html.twig', [
             'address' => $address,
             'form' => $form,
         ]);
@@ -142,7 +144,14 @@ class AddressController extends AbstractController
                            Address $address,
                            EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete' . $address->getId(), $request->request->get('_token'))) {
+        $htmlSanitizer = new HtmlSanitizer(
+            (new HtmlSanitizerConfig())->allowSafeElements()
+        );
+
+        $requestToken = $request->request->get('_token');
+        $token = $htmlSanitizer->sanitize($requestToken);
+
+        if ($this->isCsrfTokenValid('delete' . $address->getId(), $token)) {
             $entityManager->remove($address);
             $entityManager->flush();
         }

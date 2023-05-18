@@ -56,6 +56,8 @@ class ChangePasswordFormType extends AbstractType
      */
     public function configureOptions(OptionsResolver $resolver): void
     {
-        $resolver->setDefaults([]);
+        $resolver->setDefaults([
+            'sanitize_html' => true,
+        ]);
     }
 }

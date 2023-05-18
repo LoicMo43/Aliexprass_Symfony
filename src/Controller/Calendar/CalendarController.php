@@ -7,6 +7,8 @@ use App\Form\CalendarType;
 use App\Repository\CalendarRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizer;
+use Symfony\Component\HtmlSanitizer\HtmlSanitizerConfig;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -46,7 +48,7 @@ class CalendarController extends AbstractController
             return $this->redirectToRoute('calendar_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('calendar/new.html.twig', [
+        return $this->render('calendar/new.html.twig', [
             'calendar' => $calendar,
             'form' => $form,
         ]);
@@ -84,7 +86,7 @@ class CalendarController extends AbstractController
             return $this->redirectToRoute('calendar_index', [], Response::HTTP_SEE_OTHER);
         }
 
-        return $this->renderForm('calendar/edit.html.twig', [
+        return $this->render('calendar/edit.html.twig', [
             'calendar' => $calendar,
             'form' => $form,
         ]);
@@ -101,7 +103,14 @@ class CalendarController extends AbstractController
                            Calendar $calendar,
                            EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$calendar->getId(), $request->request->get('_token'))) {
+        $htmlSanitizer = new HtmlSanitizer(
+            (new HtmlSanitizerConfig())->allowSafeElements()
+        );
+
+        $requestToken = $request->request->get('_token');
+        $token = $htmlSanitizer->sanitize($requestToken);
+
+        if ($this->isCsrfTokenValid('delete'.$calendar->getId(), $token)) {
             $entityManager->remove($calendar);
             $entityManager->flush();
         }
