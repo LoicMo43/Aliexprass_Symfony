@@ -44,19 +44,36 @@
                                     <li><i class="linearicons-shield-check"></i> 1 Year AL Jazeera Brand Warranty</li>
                                     <li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
                                     <li><i class="linearicons-bag-dollar"></i> Cash on Delivery available</li>
+                                    <li>{% if product.quantity > 0 %}
+                                            <i class="linearicons-cart"></i>
+                                            <span class="avaibility">EN STOCK</span>
+                                        {% else %}
+                                            <i class="linearicons-cart"></i>
+                                            <span class="avaibility">HORS STOCK</span>
+                                        {% endif %}
+                                    </li>
                                 </ul>
                             </div>
                         </div>
                         <hr />
-                        <div class="cart_extra">
-                            <div class="cart_btn">
-                                {% if product.quantity > 0 %}
-                                    <a href="{{ path('cart_add', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart" type="button"><i class="icon-basket-loaded"></i> Add to cart</a>
-                                {% else %}
-                                    <a href="{{ path('cart_add', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart disabled" type="button"><i class="icon-basket-loaded"></i> Add to cart</a>
-                                {% endif %}
-                                <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
-                                <a class="add_wishlist" href="#"><i class="icon-heart"></i></a>
+                        <div class="container">
+                            <div class="row">
+                                <div class="cart_extra">
+                                    <div class="col-lg-8 cart_btn">
+                                        {% set route_name = app.current_route %}
+                                        {% if product.quantity > 0 %}
+                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart mb-2" type="button"><i class="icon-basket-loaded"></i>ACHETER MAINTENANT</a>
+                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart" type="button"><i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>
+                                        {% else %}
+                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart disabled mb-2" type="button"><i class="icon-basket-loaded"></i>ACHETER MAINTENANT</a>
+                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart disabled" type="button"><i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>
+                                        {% endif %}
+                                    </div>
+                                    <div class="col-lg-4 cart_btn">
+                                        <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
+                                        <a class="add_wishlist" href="#"><i class="icon-heart"></i></a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                         <hr />

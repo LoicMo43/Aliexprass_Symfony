@@ -4,6 +4,7 @@ namespace App\Controller\Cart;
 
 use App\Services\CartServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
@@ -43,12 +44,63 @@ class CartController extends AbstractController
     /**
      * Ajout d'un article
      * @param $id
-     * @return Response
+     * @param $routeName
+     * @param $slug
+     * @return RedirectResponse
      */
-    #[Route('/cart/add/{id}', name: 'cart_add')]
-    public function addToCart($id): Response
+    #[Route('/cart/add/{slug}/{routeName}/{id}', name: 'cart_add')]
+    public function addToCart($id, $routeName, $slug): RedirectResponse
     {
         $this->cartServices->addToCart($id);
+        return $this->redirectToRoute($routeName,
+            [
+                "id" => $id,
+                'slug' => $slug
+            ]
+        );
+    }
+
+    /**
+     * Ajout d'une quantité d'article
+     * @param $id
+     * @param $qty
+     * @return Response
+     */
+    #[Route('/cart/addQuantity/{id}', name: 'cart_add_quantity')]
+    public function addToCartQuantity($id, $qty): Response
+    {
+        for ($i = 0; $i < $qty; $i++) {
+            $this->cartServices->addToCart($id);
+        }
+
+        return $this->redirectToRoute("cart");
+    }
+
+    /**
+     * Acheter un article
+     * @param $id
+     * @return Response
+     */
+    #[Route('/cart/buy/{id}', name: 'cart_buy')]
+    public function buyNow($id): Response
+    {
+        $this->cartServices->addToCart($id);
+        return $this->redirectToRoute("cart");
+    }
+
+    /**
+     * Acheter une quantité d'article
+     * @param $id
+     * @param $qty
+     * @return Response
+     */
+    #[Route('/cart/buyQuantity/{id}', name: 'cart_buy_quantity')]
+    public function buyNowQuantity($id, $qty): Response
+    {
+        for ($i = 0; $i < $qty; $i++) {
+            $this->cartServices->addToCart($id);
+        }
+
         return $this->redirectToRoute("cart");
     }
 
