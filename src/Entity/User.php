@@ -52,11 +52,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
     private $orders;
 
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Wishlist::class)]
+    private Collection $wishlists;
+
     #[Pure] public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->reviewsProducts = new ArrayCollection();
         $this->orders = new ArrayCollection();
+        $this->wishlists = new ArrayCollection();
     }
 
     /**
@@ -334,6 +338,36 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         // set the owning side to null (unless already changed)
         if ($this->orders->removeElement($order) && $order->getUser() === $this) {
             $order->setUser(null);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wishlist>
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists->add($wishlist);
+            $wishlist->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            // set the owning side to null (unless already changed)
+            if ($wishlist->getUser() === $this) {
+                $wishlist->setUser(null);
+            }
         }
 
         return $this;

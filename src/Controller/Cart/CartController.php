@@ -2,29 +2,34 @@
 
 namespace App\Controller\Cart;
 
+use App\Repository\ProductRepository;
 use App\Services\CartServices;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+#[Route('/cart')]
 class CartController extends AbstractController
 {
     private CartServices $cartServices;
+    private ProductRepository $productRepository;
 
     /**
      * @param CartServices $cartServices
+     * @param ProductRepository $productRepository
      */
-    public function __construct(CartServices $cartServices)
+    public function __construct(CartServices $cartServices, ProductRepository $productRepository)
     {
         $this->cartServices  = $cartServices;
+        $this->productRepository = $productRepository;
     }
 
     /**
      * Page du panier
      * @return Response
      */
-    #[Route('/cart', name: 'cart')]
+    #[Route('/', name: 'cart')]
     public function index(): Response
     {
         // On récupère tout le contenu du panier de l'utilisateur
@@ -43,15 +48,20 @@ class CartController extends AbstractController
 
     /**
      * Ajout d'un article
-     * @param $id
-     * @param $routeName
-     * @param $slug
+     * @param int $id
+     * @param string $routeName
+     * @param string $slug
      * @return RedirectResponse
      */
-    #[Route('/cart/add/{slug}/{routeName}/{id}', name: 'cart_add')]
-    public function addToCart($id, $routeName, $slug): RedirectResponse
+    #[Route('/add/{slug}/{routeName}/{id}', name: 'cart_add')]
+    public function addToCart(int $id, string $routeName, string $slug): RedirectResponse
     {
-        $this->cartServices->addToCart($id);
+        $product = $this->productRepository->findBy(["id" => $id]);
+
+        if ($product[0]->getQuantity() > 0) {
+            $this->cartServices->addToCart($id);
+        }
+
         return $this->redirectToRoute($routeName,
             [
                 "id" => $id,
@@ -62,14 +72,34 @@ class CartController extends AbstractController
 
     /**
      * Ajout d'une quantité d'article
-     * @param $id
-     * @param $qty
+     * @param int $id
+     * @param int $qty
      * @return Response
      */
-    #[Route('/cart/addQuantity/{id}', name: 'cart_add_quantity')]
-    public function addToCartQuantity($id, $qty): Response
+    #[Route('/addQuantity/{id}', name: 'cart_add_quantity')]
+    public function addToCartQuantity(int $id, int $qty): Response
     {
-        for ($i = 0; $i < $qty; $i++) {
+        $product = $this->productRepository->findBy(["id" => $id]);
+
+        if ($product[0]->getQuantity() > 0) {
+            for ($i = 0; $i < $qty; $i++) {
+                $this->cartServices->addToCart($id);
+            }
+        }
+        return $this->redirectToRoute("cart");
+    }
+
+    /**
+     * Acheter un article
+     * @param int $id
+     * @return Response
+     */
+    #[Route('/buy/{id}', name: 'cart_buy')]
+    public function buyNow(int $id): Response
+    {
+        $product = $this->productRepository->findBy(["id" => $id]);
+
+        if ($product[0]->getQuantity() > 0) {
             $this->cartServices->addToCart($id);
         }
 
@@ -77,28 +107,20 @@ class CartController extends AbstractController
     }
 
     /**
-     * Acheter un article
-     * @param $id
-     * @return Response
-     */
-    #[Route('/cart/buy/{id}', name: 'cart_buy')]
-    public function buyNow($id): Response
-    {
-        $this->cartServices->addToCart($id);
-        return $this->redirectToRoute("cart");
-    }
-
-    /**
      * Acheter une quantité d'article
-     * @param $id
-     * @param $qty
+     * @param int $id
+     * @param int $qty
      * @return Response
      */
-    #[Route('/cart/buyQuantity/{id}', name: 'cart_buy_quantity')]
-    public function buyNowQuantity($id, $qty): Response
+    #[Route('/buyQuantity/{id}', name: 'cart_buy_quantity')]
+    public function buyNowQuantity(int $id, int $qty): Response
     {
-        for ($i = 0; $i < $qty; $i++) {
-            $this->cartServices->addToCart($id);
+        $product = $this->productRepository->findBy(["id" => $id]);
+
+        if ($product[0]->getQuantity() > 0) {
+            for ($i = 0; $i < $qty; $i++) {
+                $this->cartServices->addToCart($id);
+            }
         }
 
         return $this->redirectToRoute("cart");
@@ -106,11 +128,11 @@ class CartController extends AbstractController
 
     /**
      * Suppression d'un article
-     * @param $id
+     * @param int $id
      * @return Response
      */
-    #[Route('/cart/delete/{id}', name: 'cart_delete')]
-    public function deleteFromCart($id): Response
+    #[Route('/delete/{id}', name: 'cart_delete')]
+    public function deleteFromCart(int $id): Response
     {
         $this->cartServices->deleteFromCart($id);
         return $this->redirectToRoute("cart");
@@ -118,11 +140,11 @@ class CartController extends AbstractController
 
     /**
      * Suppression de tout le panier d'article
-     * @param $id
+     * @param int $id
      * @return Response
      */
-    #[Route('/cart/deleteAll/{id}', name: 'cart_delete_all')]
-    public function deleteAllToCart($id): Response
+    #[Route('/deleteAll/{id}', name: 'cart_delete_all')]
+    public function deleteAllToCart(int $id): Response
     {
         $this->cartServices->deleteAllToCart($id);
         return $this->redirectToRoute("cart");

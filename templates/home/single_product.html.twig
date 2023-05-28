@@ -71,7 +71,7 @@
                                     </div>
                                     <div class="col-lg-4 cart_btn">
                                         <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
-                                        <a class="add_wishlist" href="#"><i class="icon-heart"></i></a>
+                                        <a class="add_wishlist" href="{{ path('wishlist_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}"><i class="icon-heart"></i></a>
                                     </div>
                                 </div>
                             </div>

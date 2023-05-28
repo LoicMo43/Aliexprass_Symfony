@@ -63,11 +63,15 @@ class Product
     #[ORM\Column(type: 'string', length: 255)]
     private $slug;
 
+    #[ORM\ManyToMany(targetEntity: Wishlist::class, mappedBy: 'products')]
+    private Collection $wishlists;
+
     public function __construct()
     {
         $this->category = new ArrayCollection();
         $this->reviewsProducts = new ArrayCollection();
         $this->createdAt = new DateTime();
+        $this->wishlists = new ArrayCollection();
     }
 
     /**
@@ -397,6 +401,33 @@ class Product
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Wishlist>
+     */
+    public function getWishlists(): Collection
+    {
+        return $this->wishlists;
+    }
+
+    public function addWishlist(Wishlist $wishlist): self
+    {
+        if (!$this->wishlists->contains($wishlist)) {
+            $this->wishlists->add($wishlist);
+            $wishlist->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeWishlist(Wishlist $wishlist): self
+    {
+        if ($this->wishlists->removeElement($wishlist)) {
+            $wishlist->removeProduct($this);
+        }
 
         return $this;
     }

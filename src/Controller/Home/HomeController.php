@@ -2,6 +2,8 @@
 
 namespace App\Controller\Home;
 
+use App\Form\SearchType;
+use App\Model\SearchData;
 use App\Repository\HomeSliderRepository;
 use App\Repository\ProductRepository;
 use Knp\Component\Pager\PaginatorInterface;
@@ -26,6 +28,13 @@ class HomeController extends AbstractController
                           Request $request,
                           PaginatorInterface $paginator): Response
     {
+//        $searchData = new SearchData();
+//        $form = $this->createForm(SearchType::class, $searchData);
+//
+//        $form->handleRequest($request);
+//        if ($form->isSubmitted() && $form->isValid()) {
+//            dd($searchData);
+//        }
         $homeSlider = $repoHomeSlider->findBy(
             [
                 'isDisplayed' => true
