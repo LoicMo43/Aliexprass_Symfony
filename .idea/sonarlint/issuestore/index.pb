@@ -1,0 +1,21 @@
+
+\
+,src/Controller/Admin/DashboardController.php,3/a/3acc055723ea518defe4155e99f973ac20e2e524
+^
+.src/Controller/Admin/ProductCrudController.php,0/3/03a379546f44a292756ab1cd9457a713e3a5e1fe
+U
+%src/Services/StockManagerServices.php,c/c/cc41261d0158854490d9f9b51eb95d4eff647ad9
+K
+public/assets/css/media.css,8/c/8ca54d949bd4a8fe0842fb8b7f0cfcdb1fd651d2
+Q
+!public/assets/css/linearicons.css,2/9/29a35222c1b3ec7aa55593a51a2bce76bb2f16c8
+Y
+)templates/partials/product_item.html.twig,2/f/2f774bda34ae7977d87532038cf0060618e94bf6
+O
+public/assets/js/isotope.min.js,2/6/26cc43e840b8a657a8190233d9b0b00329385aaa
+\
+,src/Controller/Product/ProductController.php,f/d/fdfb54c0cfaba885a52ba2502ce590c4f7df300d
+D
+src/Entity/Order.php,3/8/3884f7ea27bbdee89b90c1a8504a9ef387c02daf
+T
+$public/assets/js/archive-products.js,9/2/92a376ad19eb96ca8c4d6709c252341785f74ac3

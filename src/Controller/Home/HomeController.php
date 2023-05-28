@@ -29,7 +29,7 @@ class HomeController extends AbstractController
                           PaginatorInterface $paginator): Response
     {
 //        $searchData = new SearchData();
-//        $form = $this->createForm(SearchType::class, $searchData);
+//        $form = $this->createForm(SearchType.php::class, $searchData);
 //
 //        $form->handleRequest($request);
 //        if ($form->isSubmitted() && $form->isValid()) {

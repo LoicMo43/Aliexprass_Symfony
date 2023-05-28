@@ -51,6 +51,13 @@ class SearchProductType extends AbstractType
                     'placeholder' => 'Tags ...'
                 ]
             ])
+            ->add('name', TextType::class, [
+                'label' => false,
+                'required' => false,
+                'attr' => [
+                    'placeholder' => 'Name ...'
+                ]
+            ])
         ;
     }
 

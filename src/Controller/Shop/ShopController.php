@@ -2,6 +2,7 @@
 
 namespace App\Controller\Shop;
 
+use ACSEO\TypesenseBundle\Finder\TypesenseQuery;
 use App\Entity\SearchProduct;
 use App\Form\SearchProductType;
 use App\Repository\ProductRepository;
@@ -13,6 +14,12 @@ use Symfony\Component\Routing\Annotation\Route;
 
 class ShopController extends AbstractController
 {
+    private $productFinder;
+
+    public function __construct($productFinder) {
+        $this->productFinder = $productFinder;
+    }
+
     /**
      * @param ProductRepository $repoProduct
      * @param Request $request
@@ -22,6 +29,7 @@ class ShopController extends AbstractController
     #[Route('/shop', name: 'shop')]
     public function shop(ProductRepository $repoProduct, Request $request, PaginatorInterface $paginator): Response
     {
+        $productsSearch = [];
         $products = $repoProduct->findAll();
         $search = new SearchProduct();
 
@@ -31,6 +39,11 @@ class ShopController extends AbstractController
 
         if($form->isSubmitted() && $form->isValid()) {
             $products = $repoProduct->findWithSearch($search);
+            if ($search->getName()) {
+                $wordToSearch = $search->getName();
+                $query = new TypesenseQuery($wordToSearch, 'name');
+                $productsSearch = $this->productFinder->rawQuery($query)->getResults();
+            }
         }
 
         $products = $paginator->paginate(
@@ -41,6 +54,7 @@ class ShopController extends AbstractController
 
         return $this->render('shop/shop.html.twig', [
             'products' => $products,
+            'searchProducts' => $productsSearch,
             'search' => $form->createView()
         ]);
     }

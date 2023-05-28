@@ -22,6 +22,10 @@
                     <div class="sidebar">
                         {{ form_start(search) }}
                         <div class="widget">
+                            <h5 class="widget_title">Name</h5>
+                            {{ form_row(search.name) }}
+                        </div>
+                        <div class="widget">
                             <h5 class="widget_title">Categories</h5>
                             {{ form_row(search.categories) }}
                         </div>
