@@ -15,9 +15,9 @@
                         <div class="lng_dropdown mr-2">
                             <label>
                                 <select name="countries" class="custome_select">
-                                    <option value='en' data-image="/assets/images/eng.png" data-title="English">English
-                                    </option>
                                     <option value='fn' data-image="/assets/images/fn.png" data-title="France">France
+                                    </option>
+                                    <option value='en' data-image="/assets/images/eng.png" data-title="English">English
                                     </option>
                                     <option value='us' data-image="/assets/images/us.png" data-title="United States">United
                                         States
@@ -28,28 +28,28 @@
                         <div class="mr-3">
                             <label>
                                 <select name="countries" class="custome_select">
-                                    <option value='USD' data-title="USD">USD</option>
                                     <option value='EUR' data-title="EUR">EUR</option>
+                                    <option value='USD' data-title="USD">USD</option>
                                     <option value='GBR' data-title="GBR">GBR</option>
                                 </select>
                             </label>
                         </div>
                         <ul class="contact_detail text-center text-lg-left">
-                            <li><i class="ti-mobile"></i><span>000-000-000</span></li>
+                            <li><i class="ti-mobile"></i><span>00-00-00-00-00</span></li>
                         </ul>
                     </div>
                 </div>
                 <div class="col-md-6">
                     <div class="text-center text-md-right">
                         <ul class="header_list">
-                            <li><a href=""><i class="ti-control-shuffle"></i><span>Compare</span></a></li>
-                            <li><a href=""><i class="ti-heart"></i><span>Wishlist</span></a></li>
+                            <li><a href=""><i class="ti-control-shuffle"></i><span>Comparer</span></a></li>
+                            <li><a href=""><i class="ti-heart"></i><span>Liste de souhaits</span></a></li>
                             {% if app.user %}
-                                <li><a href="{{ path('account') }}"><i class="ti-user"></i><span>Account</span></a></li>
-                                <li><a href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i><span>Logout</span></a></li>
+                                <li><a href="{{ path('account') }}"><i class="ti-user"></i><span>Mon compte</span></a></li>
+                                <li><a href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
                             {% else %}
-                                <li><a href="{{ path('app_login') }}"><i class="ti-user"></i><span>Login</span></a></li>
-                                <li><a href="{{ path('app_register') }}"><i class="fas fa-sign-in-alt"></i><span>Register</span></a>
+                                <li><a href="{{ path('app_login') }}"><i class="ti-user"></i><span>Connexion</span></a></li>
+                                <li><a href="{{ path('app_register') }}"><i class="fas fa-sign-in-alt"></i><span>Inscription</span></a>
                                 </li>
                             {% endif %}
                         </ul>
@@ -72,21 +72,12 @@
                 <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
                     <ul class="navbar-nav">
                         <li class="dropdown">
-                            <a class="nav-link" href="{{ path('home') }}">Home</a>
-                        </li>
-                        <li class="dropdown">
-                            <a class=" nav-link" href="#" data-toggle="dropdown">Pages</a>
+                            <a class="nav-link" href="{{ path('home') }}">Accueil</a>
                         </li>
                         <li class="">
-                            <a class=" nav-link" href="#" data-toggle="dropdown">Products</a>
+                            <a class=" nav-link" href="{{ path('shop') }}">Boutique</a>
                         </li>
-                        <li class="dropdown">
-                            <a class=" nav-link" href="#">Blog</a>
-                        </li>
-                        <li class="">
-                            <a class=" nav-link" href="{{ path('shop') }}" >Shop</a>
-                        </li>
-                        <li><a class="nav-link nav_item" href="#">Contact Us</a></li>
+                        <li><a class="nav-link nav_item" href="#">Nous contacter</a></li>
                     </ul>
                 </div>
                 <ul class="navbar-nav attr-nav align-items-center">

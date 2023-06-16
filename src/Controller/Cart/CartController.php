@@ -29,7 +29,7 @@ class CartController extends AbstractController
      * Page du panier
      * @return Response
      */
-    #[Route('/', name: 'cart')]
+    #[Route('/cart', name: 'cart')]
     public function index(): Response
     {
         // On récupère tout le contenu du panier de l'utilisateur

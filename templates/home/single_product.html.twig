@@ -3,9 +3,6 @@
 {% block title %}Accueil{% endblock %}
 
 {% block body %}
-
-    {{ include("partials/title_section.html.twig", {'name':'Product details'}) }}
-
     <div class="section">
         <div class="container">
             <div class="row">
@@ -27,7 +24,7 @@
                                 <span class="price">${{ product.price / 100 }}</span>
                                 <del>${{ product.price * 1.35 / 100 }}</del>
                                 <div class="on_sale">
-                                    <span>35% Off</span>
+                                    <span>35% de réduction</span>
                                 </div>
                             </div>
                             <div class="rating_wrap">
@@ -41,9 +38,9 @@
                             </div>
                             <div class="product_sort_info">
                                 <ul>
-                                    <li><i class="linearicons-shield-check"></i> 1 Year AL Jazeera Brand Warranty</li>
-                                    <li><i class="linearicons-sync"></i> 30 Day Return Policy</li>
-                                    <li><i class="linearicons-bag-dollar"></i> Cash on Delivery available</li>
+                                    <li><i class="linearicons-shield-check"></i>1 an de garantie de la marque</li>
+                                    <li><i class="linearicons-sync"></i>Politique de retour de 30 jours</li>
+                                    <li><i class="linearicons-bag-dollar"></i>Livraison contre remboursement possible</li>
                                     <li>{% if product.quantity > 0 %}
                                             <i class="linearicons-cart"></i>
                                             <span class="avaibility">EN STOCK</span>
@@ -79,7 +76,7 @@
                         <hr />
                         <ul class="product-meta">
                             <li>SKU: <a href="#">BE45VGRT</a></li>
-                            <li>Category: <a href="#">
+                            <li>Categorie: <a href="#">
                                     {% for category in product.category %}
                                         {{ category.name }}
                                     {% endfor %}
@@ -88,7 +85,7 @@
                         </ul>
 
                         <div class="product_share">
-                            <span>Share:</span>
+                            <span>Partager:</span>
                             <ul class="social_icons">
                                 <li><a href="#"><i class="ion-social-facebook"></i></a></li>
                                 <li><a href="#"><i class="ion-social-twitter"></i></a></li>
@@ -113,10 +110,10 @@
                                 <a class="nav-link active" id="Description-tab" data-toggle="tab" href="#Description" role="tab" aria-controls="Description" aria-selected="true">Description</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Additional info</a>
+                                <a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Informations complémentaires</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Reviews (2)</a>
+                                <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Commentaires (2)</a>
                             </li>
                         </ul>
                         <div class="tab-content shop_info_tab">
@@ -210,7 +207,7 @@
             <div class="row">
                 <div class="col-12">
                     <div class="heading_s1">
-                        <h3>Releted Products</h3>
+                        <h3>Produits de la même gamme</h3>
                     </div>
                     <div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
                         {% for category in product.category %}

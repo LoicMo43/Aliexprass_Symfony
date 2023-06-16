@@ -19,20 +19,19 @@
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="orders-tab" data-toggle="tab" href="#orders" role="tab"
-                                   aria-controls="orders" aria-selected="false"><i class="ti-shopping-cart-full"></i>Orders</a>
+                                   aria-controls="orders" aria-selected="false"><i class="ti-shopping-cart-full"></i>Commandes</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="address-tab" data-toggle="tab" href="#address" role="tab"
-                                   aria-controls="address" aria-selected="true"><i class="ti-location-pin"></i>My
-                                    Address</a>
+                                   aria-controls="address" aria-selected="true"><i class="ti-location-pin"></i>Mes adresses</a>
                             </li>
                             <li class="nav-item">
                                 <a class="nav-link" id="account-detail-tab" data-toggle="tab" href="#account-detail"
                                    role="tab" aria-controls="account-detail" aria-selected="true"><i
-                                            class="ti-id-badge"></i>Account details</a>
+                                            class="ti-id-badge"></i>Détail du compte</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="{{ path('app_logout') }}"><i class="ti-lock"></i>Logout</a>
+                                <a class="nav-link" href="{{ path('app_logout') }}"><i class="ti-lock"></i>Déconnexion</a>
                             </li>
                         </ul>
                     </div>
@@ -52,19 +51,19 @@
                              aria-labelledby="dashboard-tab">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3>HELLO {{ app.user.firstname | upper }}  {{ app.user.lastname | upper }}</h3>
+                                    <h3>Bonjour, {{ app.user.firstname | upper }}  {{ app.user.lastname | upper }}</h3>
                                 </div>
                                 <div class="card-body">
-                                    <p>From your account dashboard. you can easily check &amp; view your
-                                        <a href="javascript:void(0);" onclick="$('#orders-tab').trigger('click')">recent
-                                            orders</a>, manage your <a href="javascript:void(0);"
-                                                                       onclick="$('#address-tab').trigger('click')">shipping
-                                            and billing addresses</a> and <a href="javascript:void(0);"
-                                                                             onclick="$('#account-detail-tab').trigger('click')">edit
-                                            your password and account details.</a></p>
+                                    <p>Depuis le tableau de bord de votre compte, vous pouvez facilement vérifier &amp; voir vos
+                                        <a href="javascript:void(0);" onclick="$('#orders-tab').trigger('click')">récentes commandes
+                                            </a>, gérer votre <a href="javascript:void(0);"
+                                                                       onclick="$('#address-tab').trigger('click')">d'expédition
+                                            les adresses de livraison et de facturation</a> et <a href="javascript:void(0);"
+                                                                             onclick="$('#account-detail-tab').trigger('click')">éditer
+                                            votre mot de passe et les détails de votre compte.</a></p>
                                     {% if is_granted('ROLE_ADMIN') %}
-                                        <a href="{{ path('admin') }}" target="_blank" class="btn btn-fill-out">Access
-                                            the backoffice</a>
+                                        <a href="{{ path('admin') }}" target="_blank" class="btn btn-fill-out">Accès
+                                            au backoffice</a>
                                     {% endif %}
                                 </div>
                             </div>
@@ -72,7 +71,7 @@
                         <div class="tab-pane fade" id="orders" role="tabpanel" aria-labelledby="orders-tab">
                             <div class="card">
                                 <div class="card-header">
-                                    <h3>Orders</h3>
+                                    <h3>Commandes</h3>
                                 </div>
                                 {% if orders %}
                                     <div class="card-body">
@@ -92,9 +91,9 @@
                                                     <tr>
                                                         <td>{{ order.id }}</td>
                                                         <td>{{ order.createdAt | date('d/m/Y') }}</td>
-                                                        <td>Processing</td>
+                                                        <td>En cours</td>
                                                         <td>{{ order.subTotalTTC }} for {{ order.quantity }} item</td>
-                                                        <td><a href="{{ path('account_order_details', {'id': order.id })}}" class="btn btn-fill-out btn-sm">View</a></td>
+                                                        <td><a href="{{ path('account_order_details', {'id': order.id })}}" class="btn btn-fill-out btn-sm">Voir</a></td>
                                                     </tr>
                                                 {% endfor %}
                                                 </tbody>
@@ -110,8 +109,7 @@
                         <div class="tab-pane fade" id="address" role="tabpanel" aria-labelledby="address-tab">
                             <div class="row">
                                 <div class="col-lg-12">
-                                    <a href="{{ path('address_new') }}" class="btn btn-fill-out mb-3">Add new
-                                        address</a>
+                                    <a href="{{ path('address_new') }}" class="btn btn-fill-out mb-3">Ajouter une nouvelle adresse</a>
                                 </div>
                             </div>
                             <div class="row">

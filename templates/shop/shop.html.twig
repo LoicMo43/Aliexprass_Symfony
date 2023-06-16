@@ -10,7 +10,7 @@
                 <div class="col-lg-9">
                     <div class="row shop_container">
                         {% if products is empty %}
-                            <p class="m-5">Sorry, No product matches your search results !</p>
+                            <p class="m-5">Désolé, aucun produit ne correspond à votre recherche !</p>
                         {% endif %}
                         {% for product in products %}
                             {{ include('partials/product.html.twig',{'product': product}) }}
@@ -22,7 +22,7 @@
                     <div class="sidebar">
                         {{ form_start(search) }}
                         <div class="widget">
-                            <h5 class="widget_title">Name</h5>
+                            <h5 class="widget_title">Nom</h5>
                             {{ form_row(search.name) }}
                         </div>
                         <div class="widget">
@@ -30,7 +30,7 @@
                             {{ form_row(search.categories) }}
                         </div>
                         <div class="widget">
-                            <h5 class="widget_title">Price</h5>
+                            <h5 class="widget_title">Prix</h5>
                             <div class="form-row">
                                 <div class="col-md-6">
                                     {{ form_row(search.minprice) }}
