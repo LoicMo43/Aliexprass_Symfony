@@ -27,6 +27,14 @@ class ReviewsProduct
     #[ORM\JoinColumn(nullable: false)]
     private $product;
 
+    #[ORM\Column]
+    private ?\DateTimeImmutable $created_at = null;
+
+    public function __construct()
+    {
+        $this->created_at = new \DateTimeImmutable('now');
+    }
+
     /**
      * @return int|null
      */
@@ -107,6 +115,18 @@ class ReviewsProduct
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): ?\DateTimeImmutable
+    {
+        return $this->created_at;
+    }
+
+    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    {
+        $this->created_at = $created_at;
 
         return $this;
     }

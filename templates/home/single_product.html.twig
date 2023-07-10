@@ -31,7 +31,7 @@
                                 <div class="rating">
                                     <div class="product_rate" style="width:80%"></div>
                                 </div>
-                                <span class="rating_num">(21)</span>
+                                <span class="rating_num">({{ reviews|length }})</span>
                             </div>
                             <div class="pr_desc">
                                 <p>{{ product.description | raw }}</p>
@@ -113,7 +113,7 @@
                                 <a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Informations complémentaires</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Commentaires (2)</a>
+                                <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Commentaires ({{ reviews|length }})</a>
                             </li>
                         </ul>
                         <div class="tab-content shop_info_tab">
@@ -123,74 +123,50 @@
 
                             <div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
                                 <div class="comments">
-                                    <h5 class="product_tab_title">2 Review For <span>Blue Dress For Woman</span></h5>
+                                    <h5 class="product_tab_title">{{ reviews|length }} Avis pour <span>{{ product.name }}</span></h5>
                                     <ul class="list_none comment_list mt-4">
-                                        <li>
-                                            <div class="comment_img">
-                                                <img src="http://placehold.it/50" alt="user1"/>
-                                            </div>
-                                            <div class="comment_block">
-                                                <div class="rating_wrap">
-                                                    <div class="rating">
-                                                        <div class="product_rate" style="width:80%"></div>
+                                        {% if reviews is not empty %}
+                                            {% for review in reviews %}
+                                                <li>
+                                                <div class="comment_img">
+                                                    <img src="http://placehold.it/300" alt="user2"/>
+                                                </div>
+                                                <div class="comment_block">
+                                                    <div class="rating_wrap">
+                                                        <div class="rating">
+                                                            <div class="product_rate" style="width:{{ review.note }}%"></div>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <p class="customer_meta">
-                                                    <span class="review_author">Alea Brooks</span>
-                                                    <span class="comment-date">March 5, 2018</span>
-                                                </p>
-                                                <div class="description">
-                                                    <p>Lorem Ipsumin gravida nibh vel velit auctor aliquet. Aenean sollicitudin, lorem quis bibendum auctor, nisi elit consequat ipsum, nec sagittis sem nibh id elit. Duis sed odio sit amet nibh vulputate</p>
-                                                </div>
-                                            </div>
-                                        </li>
-                                        <li>
-                                            <div class="comment_img">
-                                                <img src="http://placehold.it/300" alt="user2"/>
-                                            </div>
-                                            <div class="comment_block">
-                                                <div class="rating_wrap">
-                                                    <div class="rating">
-                                                        <div class="product_rate" style="width:60%"></div>
+                                                    <p class="customer_meta">
+                                                        <span class="review_author">{{ review.user.firstname }} {{ review.user.lastname }}</span>
+                                                        <span class="comment-date">{{ review.createdAt.format('d/m/Y') }}</span>
+                                                    </p>
+                                                    <div class="description">
+                                                        <p>{{ review.comment }}</p>
                                                     </div>
+                                                    {% if canDeleteReview[review.id] %}
+                                                        <a href="{{ path('delete_review', { 'reviewId': review.id }) }}" class="btn btn-fill-out mb-2" type="button">Supprimer l'avis</a>
+                                                    {% endif %}
                                                 </div>
-                                                <p class="customer_meta">
-                                                    <span class="review_author">Grace Wong</span>
-                                                    <span class="comment-date">June 17, 2018</span>
-                                                </p>
-                                                <div class="description">
-                                                    <p>It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters</p>
-                                                </div>
+                                            </li>
+                                            {% endfor %}
+                                            {% else %}
+                                            <div>
+                                                <h1>Aucun avis sur ce produit</h1>
                                             </div>
-                                        </li>
+                                        {% endif %}
                                     </ul>
                                 </div>
                                 <div class="review_form field_form">
-                                    <h5>Add a review</h5>
-                                    <form class="row mt-3">
-                                        <div class="form-group col-12">
-                                            <div class="star_rating">
-                                                <span data-value="1"><i class="far fa-star"></i></span>
-                                                <span data-value="2"><i class="far fa-star"></i></span>
-                                                <span data-value="3"><i class="far fa-star"></i></span>
-                                                <span data-value="4"><i class="far fa-star"></i></span>
-                                                <span data-value="5"><i class="far fa-star"></i></span>
-                                            </div>
-                                        </div>
-                                        <div class="form-group col-12">
-                                            <textarea required="required" placeholder="Your review *" class="form-control" name="message" rows="4"></textarea>
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <input required="required" placeholder="Enter Name *" class="form-control" name="name" type="text">
-                                        </div>
-                                        <div class="form-group col-md-6">
-                                            <input required="required" placeholder="Enter Email *" class="form-control" name="email" type="email">
-                                        </div>
-
-                                        <div class="form-group col-12">
-                                            <button type="submit" class="btn btn-fill-out" name="submit" value="Submit">Submit Review</button>
-                                        </div>
-                                    </form>
+                                    <h5>Ajouter un avis</h5>
+                                    {% if app.user %}
+                                        {{ form_start(form) }}
+                                            {{ form_widget(form) }}
+                                            <button class="btn btn-border-fill btn-block">{{ button_label|default('Soumettre') }}</button>
+                                        {{ form_end(form) }}
+                                        {% else %}
+                                            <a href="{{ path('app_login') }}" class="btn btn-fill-out mb-2" type="button"></i>SE CONNECTER</a>
+                                    {% endif %}
                                 </div>
                             </div>
                         </div>
