@@ -4,7 +4,7 @@
 
 {% block body %}
 
-{{ include("partials/title_section.html.twig", {'name':'Reset Password'}) }}
+{{ include("partials/title_section.html.twig", {'name':'Réinitialiser votre mot de passe'}) }}
 
 <div class="login_register_wrap section">
     <div class="container">
@@ -13,15 +13,15 @@
                 <div class="login_wrap">
                     <div class="padding_eight_all bg-white">
                         <div class="heading_s1">
-                            <h3>Reset Password</h3>
+                            <h3>Réinitialiser votre mot de passe</h3>
                         </div>
                         <div class="content">
                             {{ form_start(resetForm) }}
                                 {{ form_row(resetForm.plainPassword) }}
-                                <button class="btn btn-fill-out btn-block">Reset password</button>
+                                <button class="btn btn-fill-out btn-block">Réinitialiser votre mot de passe</button>
                             {{ form_end(resetForm) }}
                         </div>
-                        <div class="form-note text-center">Don't Have an Account? <a href="{{ path('app_register')}}">Sign up now</a></div>
+                        <div class="form-note text-center">Vous n'avez pas de compte ? <a href="{{ path('app_register')}}">S'inscrire maintenant</a></div>
                     </div>
                 </div>
             </div>

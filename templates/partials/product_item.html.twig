@@ -1,21 +1,16 @@
 <div class="item">
     <div class="product">
         <div class="product_img">
-            <a href="">
-                <img src="/assets/uploads/products/{{ product.image }}" alt="{{ product.image }}">
-            </a>
+            <img height="300" src="/assets/uploads/products/{{ product.image }}" alt="{{ product.image }}">
             <div class="product_action_box">
                 <ul class="list_none pr_action_btn">
-                    {% if product.quantity > 0 %}
-                        <li class="add-to-cart"><a href="{{ path('cart_buy', {'id': product.id}) }}"><i class="icon-basket-loaded"></i> Add To Cart</a></li>
-                    {% endif %}
                     <li><a href=""><i class="icon-shuffle"></i></a></li>
-                    <li><a href="" class=""><i class="icon-magnifier-add"></i></a></li>
+                    <li><a href="{{ path('product_details', {'slug': product.slug}) }}" class=""><i class="icon-magnifier-add"></i></a></li>
                     <li><a href="#"><i class="icon-heart"></i></a></li>
                 </ul>
             </div>
         </div>
-        <div class="product_info">
+        <div class="product_info" style="height: 150px;">
             <h6 class="product_title"><a href="">{{ product.name }}</a></h6>
             <div class="product_price">
                 <span class="price">{{ product.price / 100 }}</span>
@@ -29,6 +24,13 @@
                     <div class="product_rate" style="width:80%"></div>
                 </div>
                 <span class="rating_num">(21)</span>
+            </div>
+            <div class="rating_wrap">
+                {% if product.quantity > 0 %}
+                    <span class="avaibility">EN STOCK</span>
+                {% else %}
+                    <span class="avaibility">HORS STOCK</span>
+                {% endif %}
             </div>
             <div class="pr_desc">
                 <p>{{ product.description | raw }}</p>
