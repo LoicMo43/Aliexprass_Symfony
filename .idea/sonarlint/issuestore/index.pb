@@ -45,22 +45,12 @@ J
 tests/Unit/ProductTest.php,6/1/61c577df76b7b048543d4b1610ff9d3c3178ed7d
 F
 src/Entity/Product.php,4/3/43672f36815a1d5d48e2d6884176d0a297fbd86d
-=
-composer.lock,c/3/c3262e2a0879195bd6a727e90f768bc85ad79ffd
-<
-symfony.lock,e/1/e17766cca3407ba620a8cef1c14d37208a74e8a4
 N
 src/Form/SearchProductType.php,f/c/fc6bd14d48fb94f7bd66258debb422549c91e41d
 D
 config/services.yaml,8/7/87042d1f46b57381244d70e7a42feeb7710727dc
-=
-composer.json,3/9/3957b91a0d8450cea0115cfd5af69eac90d75897
-B
-config/bundles.php,f/a/fa9a09a4e1ae4281250526d3dec214138beb5735
 M
 templates/shop/shop.html.twig,3/a/3aec922cb00725103e262610f31bfddc0aac9b39
-\
-,src/Controller/Account/AccountController.php,8/b/8b6339a85ed7265cfec6d271a8147c2a45df2b05
 Q
 !templates/address/_form.html.twig,0/f/0f55f3ec8beae4330acdd507d3d2c38fb57b91fb
 i
@@ -75,3 +65,25 @@ b
 -src/Controller/Account/SecurityController.php,6/c/6c4f12015df040b41c78923385ae424016c16fa1
 \
 ,src/Controller/Account/AddressController.php,7/e/7e54b8676a82e187cffb7d037a0faf45c899bf71
+K
+public/assets/css/style.css,7/1/71099636a70dab049c017c02bc65e7017dc77aef
+V
+&src/Controller/Cart/CartController.php,c/d/cd20468925436e39013062245a4e6ed7eed28a37
+H
+src/Form/AddressType.php,1/7/17f351de87e5715090cd133482306c4b3c147785
+\
+,src/Controller/Product/ProductController.php,f/d/fdfb54c0cfaba885a52ba2502ce590c4f7df300d
+M
+src/Entity/ReviewsProduct.php,2/c/2cf959be5d851120579ff066d46d70acb16bc829
+O
+src/Form/ReviewsProductType.php,7/4/74e4f6d16b2ed9f9aca7fa72a02d4a24260ef2e0
+W
+'templates/home/single_product.html.twig,9/8/98f03af61e95d9297ac05c4c49754b301de1d697
+C
+src/Entity/User.php,0/a/0a3e99b9da178509aeb5b3fa6f5dce46bc0eb8be
+a
+1src/Controller/Account/RegistrationController.php,d/7/d7b67f7d208036c804a97086ecd97e575744c566
+S
+#src/Security/LoginAuthenticator.php,9/2/9250f4c22b82eb28ddd05e6d6282fa86414ab455
+>
+aliexprass.sql,0/9/090fdecca825808b20fa8bec2795aeff19663fe6

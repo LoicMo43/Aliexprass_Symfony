@@ -42,9 +42,9 @@
                 <div class="col-md-6">
                     <div class="text-center text-md-right">
                         <ul class="header_list">
-                            <li><a href=""><i class="ti-control-shuffle"></i><span>Comparer</span></a></li>
-                            <li><a href=""><i class="ti-heart"></i><span>Liste de souhaits</span></a></li>
                             {% if app.user %}
+                                <li><a href=""><i class="ti-control-shuffle"></i><span>Comparer</span></a></li>
+                                <li><a href=""><i class="ti-heart"></i><span>Liste de souhaits</span></a></li>
                                 <li><a href="{{ path('account') }}"><i class="ti-user"></i><span>Mon compte</span></a></li>
                                 <li><a href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
                             {% else %}
