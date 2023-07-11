@@ -24,7 +24,11 @@ class ProductController extends AbstractController
      * @return Response
      */
     #[Route('/product/{slug}', name: 'product_details')]
-    public function show(?Product $product, Request $request, EntityManagerInterface $entityManager, ReviewsProductRepository $reviewsProductRepository, string $slug) : Response {
+    public function show(?Product $product,
+                         Request $request,
+                         EntityManagerInterface $entityManager,
+                         ReviewsProductRepository $reviewsProductRepository,
+                         string $slug) : Response {
         if (!$product) {
             return $this->redirectToRoute('home');
         }

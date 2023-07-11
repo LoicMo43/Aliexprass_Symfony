@@ -10,7 +10,6 @@ use Doctrine\ORM\Mapping as ORM;
 use JetBrains\PhpStorm\Pure;
 
 #[ORM\Entity(repositoryClass: CartRepository::class)]
-#[ORM\Table(name: '`Cart`')]
 class Cart
 {
     #[ORM\Id]

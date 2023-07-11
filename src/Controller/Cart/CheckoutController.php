@@ -50,7 +50,7 @@ class CheckoutController extends AbstractController
 
         // Si l'utilisateur ne possède aucune adresse de livraison, lui obliger a en créer une
         if (!$user->getAddresses()->getValues()) {
-            $this->addFlash('checkout_message', 'Please add an address to your account awithout continuing.');
+            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');
             return $this->redirectToRoute("address_new");
         }
 
@@ -91,7 +91,7 @@ class CheckoutController extends AbstractController
 
         // Si l'utilisateur ne possède aucune adresse de livraison, lui obliger a en créer une.
         if (!$user->getAddresses()->getValues()) {
-            $this->addFlash('checkout_message', 'Please add an address to your account awithout continuing.');
+            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');
             return $this->redirectToRoute("address_new");
         }
 
