@@ -18,27 +18,28 @@ class StripeCheckoutSessionController extends AbstractController
      * @throws ApiErrorException
      */
     #[Route('/create-checkout-session/{reference}', name: 'create_checkout_session')]
-    public function index(?Cart $cart,
-                          OrderServices $orderServices,
-                          EntityManagerInterface $manager): Response
+    public function index(?Cart $cart, OrderServices $orderServices, EntityManagerInterface $manager): Response
     {
-        $user = $this->getUser();
-        if (!$cart) {return $this->redirectToRoute('home');}
+        $user = $this->getUser();  // Récupère l'utilisateur connecté actuel
+        if (!$cart) {  // Vérifie si le panier est null
+            return $this->redirectToRoute('home');  // Redirige vers la page d'accueil si le panier est null
+        }
 
-        $order = $orderServices->createOrder($cart);
-        Stripe::setApiKey($_ENV['STRIPE_SK']);
+        $order = $orderServices->createOrder($cart);  // Crée une commande à partir du panier via le service OrderServices
+        Stripe::setApiKey($_ENV['STRIPE_SK']);  // Configure la clé API Stripe
 
         $checkout_session = Session::create([
-            'customer_email' => $user->getEmail(),
-            'mode' => 'payment',
-            'line_items' => $orderServices->getLineItems($cart),
-            'success_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-success/{CHECKOUT_SESSION_ID}',
-            'cancel_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-cancel/{CHECKOUT_SESSION_ID}',
+            'customer_email' => $user->getEmail(),  // Définit l'adresse e-mail du client pour la session de paiement
+            'mode' => 'payment',  // Définit le mode de la session de paiement
+            'line_items' => $orderServices->getLineItems($cart),  // Récupère les éléments de ligne (produits) de la commande via le service OrderServices
+            'success_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-success/{CHECKOUT_SESSION_ID}',  // Définit l'URL de succès de paiement Stripe
+            'cancel_url' => $_ENV['YOUR_DOMAIN'] . '/stripe-payment-cancel/{CHECKOUT_SESSION_ID}',  // Définit l'URL d'annulation de paiement Stripe
         ]);
 
-        $order->setStripeCheckoutSessionId($checkout_session->id);
-        $manager->flush();
+        $order->setStripeCheckoutSessionId($checkout_session->id);  // Définit l'ID de session de paiement Stripe dans la commande
+        $manager->flush();  // Enregistre les modifications de la commande en base de données
 
-        return $this->redirect($checkout_session->url);
+        return $this->redirect($checkout_session->url);  // Redirige vers l'URL de la session de paiement Stripe
     }
+
 }

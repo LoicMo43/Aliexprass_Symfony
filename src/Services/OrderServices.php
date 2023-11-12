@@ -33,40 +33,46 @@ class OrderServices {
      */
     public function createOrder($cart): Order
     {
-        $order = new Order();
+        $order = new Order();  // Crée une nouvelle instance de la classe Order
+
+        // Configure les propriétés de la commande à partir des informations du panier
         $order->setReference($cart->getReference())
-              ->setCarrierName($cart->getCarrierName())
-              ->setCarrierPrice($cart->getCarrierPrice())
-              ->setFullName($cart->getFullName())
-              ->setDeliveryAddress($cart->getDeliveryAddress())
-              ->setMoreInformations($cart->getMoreInformations())
-              ->setQuantity($cart->getQuantity())
-              ->setSubTotalHT($cart->getSubTotalHT())
-              ->setTaxe($cart->getTaxe())
-              ->setSubTotalTTC($cart->getSubTotalTTC())
-              ->setUser($cart->getUser())
-              ->setCreatedAt($cart->getCreatedAt());
+            ->setCarrierName($cart->getCarrierName())
+            ->setCarrierPrice($cart->getCarrierPrice())
+            ->setFullName($cart->getFullName())
+            ->setDeliveryAddress($cart->getDeliveryAddress())
+            ->setMoreInformations($cart->getMoreInformations())
+            ->setQuantity($cart->getQuantity())
+            ->setSubTotalHT($cart->getSubTotalHT())
+            ->setTaxe($cart->getTaxe())
+            ->setSubTotalTTC($cart->getSubTotalTTC())
+            ->setUser($cart->getUser())
+            ->setCreatedAt($cart->getCreatedAt());
 
-        $this->manager->persist($order);
+        $this->manager->persist($order);  // Enregistre la commande en base de données
 
-        $products = $cart->getCartDetails()->getValues();
+        $products = $cart->getCartDetails()->getValues();  // Récupère les produits du panier
 
-        foreach($products as $cart_product) {
-            $orderDetails = new OrderDetails();
+        foreach ($products as $cart_product) {
+            $orderDetails = new OrderDetails();  // Crée une nouvelle instance de la classe OrderDetails
+
+            // Configure les propriétés des détails de commande à partir des informations du produit dans le panier
             $orderDetails->setOrders($order)
-                         ->setProductName($cart_product->getProductName())
-                         ->setProductPrice($cart_product->getProductPrice())
-                         ->setQuantity($cart_product->getQuantity())
-                         ->setSubTotalHT($cart_product->getSubTotalHT())
-                         ->setSubTotalTTC($cart_product->getSubTotalTTC())
-                         ->setTaxe($cart_product->getTaxe());
-            $this->manager->persist($orderDetails);
+                ->setProductName($cart_product->getProductName())
+                ->setProductPrice($cart_product->getProductPrice())
+                ->setQuantity($cart_product->getQuantity())
+                ->setSubTotalHT($cart_product->getSubTotalHT())
+                ->setSubTotalTTC($cart_product->getSubTotalTTC())
+                ->setTaxe($cart_product->getTaxe());
+
+            $this->manager->persist($orderDetails);  // On persiste les détails de la commande
         }
 
-        $this->manager->flush();
+        $this->manager->flush();  // Enrengistre les modifications en base de données
 
-        return $order;
+        return $order;  // Retourne l'objet Order créé
     }
+
 
     /**
      * @param Cart $cart

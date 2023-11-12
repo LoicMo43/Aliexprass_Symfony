@@ -56,19 +56,20 @@ class CartController extends AbstractController
     #[Route('/add/{slug}/{routeName}/{id}', name: 'cart_add')]
     public function addToCart(int $id, string $routeName, string $slug): RedirectResponse
     {
-        $product = $this->productRepository->findBy(["id" => $id]);
+        $product = $this->productRepository->findBy(["id" => $id]);  // Recherche du produit dans le repository en fonction de son ID
 
-        if ($product[0]->getQuantity() > 0) {
-            $this->cartServices->addToCart($id);
+        if ($product[0]->getQuantity() > 0) {  // Vérification si la quantité du produit est supérieure à 0
+            $this->cartServices->addToCart($id);  // Ajout du produit au panier via le service cartServices
         }
 
-        return $this->redirectToRoute($routeName,
+        return $this->redirectToRoute($routeName,  // Redirection vers une route spécifiée
             [
-                "id" => $id,
-                'slug' => $slug
+                "id" => $id,  // Paramètre d'ID passé à la route
+                'slug' => $slug  // Paramètre de slug passé à la route
             ]
         );
     }
+
 
     /**
      * Ajout d'une quantité d'article

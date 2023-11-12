@@ -35,39 +35,38 @@ class CheckoutController extends AbstractController
      * @return Response
      */
     #[Route('/', name: 'checkout')]
-    public function index(): Response
+    public function checkout(): Response
     {
-        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
-        // Récupération de utilisateur actuel et de tout son panier
+        $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');  // Vérifie si l'utilisateur est entièrement authentifié, sinon accès refusé
+
         /** @var User $user */
-        $user = $this->getUser();
-        $cart = $this->cartServices->getFullCart();
+        $user = $this->getUser();  // Récupère l'utilisateur connecté actuel
 
-        // Si le panier contient des articles le rediriger sur la route 'home'
-        if (isset($cart['product'])) {
-            return $this->redirectToRoute("home");
+        $cart = $this->cartServices->getFullCart();  // Récupère les données complètes du panier via le service cartServices
+
+        if (isset($cart['product'])) {  // Vérifie s'il y a des produits dans le panier
+            return $this->redirectToRoute("home");  // Redirige vers la page d'accueil si le panier contient des produits
         }
 
-        // Si l'utilisateur ne possède aucune adresse de livraison, lui obliger a en créer une
-        if (!$user->getAddresses()->getValues()) {
-            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');
-            return $this->redirectToRoute("address_new");
+        if (!$user->getAddresses()->getValues()) {  // Vérifie si l'utilisateur a des adresses enregistrées dans son compte
+            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');  // Ajoute un message flash pour informer l'utilisateur
+            return $this->redirectToRoute("address_new");  // Redirige vers la création d'une nouvelle adresse
         }
 
-        // Si l'utilisateur a donner toutes les informations demandées, le rediriger sur la page de confirmation
-        if ($this->requestStack->getSession()->get('checkout_data')) {
-            return $this->redirectToRoute('checkout_confirm');
+        if ($this->requestStack->getSession()->get('checkout_data')) {  // Vérifie si les données de validation sont déjà stockées en session
+            return $this->redirectToRoute('checkout_confirm');  // Redirige vers la page de confirmation de la commande
         }
 
-        $form = $this->createForm(CheckoutType::class, null, [
-            'user' => $user
+        $form = $this->createForm(CheckoutType::class, null, [  // Crée un formulaire de validation de commande avec le type CheckoutType
+            'user' => $user  // Passe l'utilisateur en tant qu'option supplémentaire pour le formulaire
         ]);
 
-        return $this->render('checkout/index.html.twig', [
-            'cart' => $cart,
-            'checkout' => $form->createView()
+        return $this->render('checkout/index.html.twig', [  // Rend la vue 'checkout/index.html.twig' avec les données nécessaires
+            'cart' => $cart,  // Passage des données du panier à la vue
+            'checkout' => $form->createView()  // Passage de la vue du formulaire de validation à la vue
         ]);
     }
+
 
     /**
      * Page de confirmation du panier
@@ -79,52 +78,41 @@ class CheckoutController extends AbstractController
     public function confirm(Request $request,
                             OrderServices $orderServices): Response
     {
-        // Récupération de tout le panier
         /** @var User $user */
-        $user = $this->getUser();
-        $cart = $this->cartServices->getFullCart();
+        $user = $this->getUser();  // Récupère l'utilisateur connecté actuel
 
-        // Si le panier contient des articles le rediriger sur la route 'home'
-        if (isset($cart['product'])) {
-            return $this->redirectToRoute("home");
+        $cart = $this->cartServices->getFullCart();  // Récupère les données complètes du panier via le service cartServices
+
+        if (isset($cart['product'])) {  // Vérifie s'il y a des produits dans le panier
+            return $this->redirectToRoute("home");  // Redirige vers la page d'accueil si le panier contient des produits
         }
 
-        // Si l'utilisateur ne possède aucune adresse de livraison, lui obliger a en créer une.
-        if (!$user->getAddresses()->getValues()) {
-            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');
-            return $this->redirectToRoute("address_new");
+        if (!$user->getAddresses()->getValues()) {  // Vérifie si l'utilisateur a des adresses enregistrées dans son compte
+            $this->addFlash('checkout_message', 'Veuillez ajouter une adresse à votre compte sans continuer.');  // Ajoute un message flash pour informer l'utilisateur
+            return $this->redirectToRoute("address_new");  // Redirige vers la création d'une nouvelle adresse
         }
 
-        $form = $this->createForm(CheckoutType::class, null, [
-            'user' => $user
+        $form = $this->createForm(CheckoutType::class, null, [  // Crée un formulaire de validation de commande avec le type CheckoutType
+            'user' => $user  // Passe l'utilisateur en tant qu'option supplémentaire pour le formulaire
         ]);
 
-        $form->handleRequest($request);
+        $form->handleRequest($request);  // Gère la soumission du formulaire et la manipulation des données associées
 
-        /**
-         * Si l'utilisateur a donner toutes les informations demandées, le rediriger sur la page de confirmation
-         * OU
-         * le formulaire a été soumis et valide
-         */
         if ($this->requestStack->getSession()->get('checkout_data') || ($form->isSubmitted() && $form->isValid())) {
 
-            // Si l'utilisateur a donner toutes les informations demandées, le stocker dans une var $data
-            if ($this->requestStack->getSession()->get('checkout_data')) {
+            if ($this->requestStack->getSession()->get('checkout_data')) {  // Vérifie si les données de validation sont déjà stockées en session
                 $data = $this->requestStack->getSession()->get('checkout_data');
-            }
-            else {
-                // Sinon récupérer les informations a partir du formulaire soumis en amont
-                $data = $form->getData();
-                $this->requestStack->getSession()->set('checkout_data', $data);
+            } else {
+                $data = $form->getData();  // Récupère les données du formulaire soumis
+                $this->requestStack->getSession()->set('checkout_data', $data);  // Stocke les données de validation en session
             }
 
-            $address = $data['address'];
-            $carrier = $data['carrier'];
-            $information = $data['information'];
+            $address = $data['address'];  // Récupère l'adresse sélectionnée dans les données de validation
+            $carrier = $data['carrier'];  // Récupère le transporteur sélectionné dans les données de validation
+            $information = $data['information'];  // Récupère les informations supplémentaires dans les données de validation
 
-            // Sauvegarde du panier
-            $cart['checkout'] = $data;
-            $reference =  $orderServices->saveCart($cart, $user);
+            $cart['checkout'] = $data;  // Ajoute les données de validation au tableau des données du panier
+            $reference = $orderServices->saveCart($cart, $user);  // Sauvegarde le panier en tant que commande et récupère la référence de commande générée
 
             return $this->render('checkout/confirm.html.twig', [
                 'cart' => $cart,
@@ -133,10 +121,12 @@ class CheckoutController extends AbstractController
                 'information' => $information,
                 'reference' => $reference,
                 'checkout' => $form->createView()
-            ]);
+            ]);  // Rend la vue de confirmation de la commande avec les données nécessaires
         }
-        return $this->redirectToRoute('checkout');
+
+        return $this->redirectToRoute('checkout');  // Redirige vers la page de validation de la commande si les conditions précédentes ne sont pas remplies
     }
+
 
     /**
      * @return Response

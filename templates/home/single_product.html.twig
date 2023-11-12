@@ -57,11 +57,14 @@
                             <div class="row">
                                 <div class="cart_extra">
                                     <div class="col-lg-8 cart_btn">
-                                        {% set route_name = app.current_route %}
-                                        {% if product.quantity > 0 %}
-                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart mb-2" type="button"><i class="icon-basket-loaded"></i>ACHETER MAINTENANT</a>
-                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart" type="button"><i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>
+                                      {% set route_name = app.current_route %}  {#  Récupère le nom de la route actuelle et le stocke dans la variable "route_name" #}
+                                        {% if product.quantity > 0 %}  {# Vérifie si la quantité du produit est supérieure à 0 #}
+                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart mb-2" type="button">
+                                                <i class="icon-basket-loaded"></i>ACHETER MAINTENANT </a>  {# Affiche un lien pour acheter le produit immédiatement #}
+                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart" type="button">
+                                                <i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>  {#  Affiche un lien pour ajouter le produit au panier #}
                                         {% else %}
+
                                             <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart disabled mb-2" type="button"><i class="icon-basket-loaded"></i>ACHETER MAINTENANT</a>
                                             <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart disabled" type="button"><i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>
                                         {% endif %}
