@@ -1,0 +1,41 @@
+# Fichiers Git
+.git
+.gitignore
+
+# Fichiers de dépendances
+node_modules/
+vendor/
+
+# Fichiers de cache et temporaires
+var/cache/
+var/logs/
+var/sessions/
+
+# Fichiers de configuration
+.env
+.env.local
+.env.*.local
+
+# Fichiers de développement
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Fichiers de test
+tests/
+phpunit.xml.dist
+
+# Documentation
+README.md
+*.md
+
+# Docker
+docker-compose.override.yml
+Dockerfile
+.dockerignore
+
+# Assets de développement
+package.json
+package-lock.json
+webpack.config.js 

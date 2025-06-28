@@ -57,7 +57,7 @@ class Product
     #[ORM\Column(type: 'integer')]
     private $quantity;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', name: 'createdAt')]
     private $createdAt;
 
     #[ORM\Column(type: 'text', nullable: true)]

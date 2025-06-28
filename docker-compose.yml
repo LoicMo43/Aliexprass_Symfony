@@ -1,21 +1,71 @@
-version: '3'
+version: '3.8'
 
 services:
-###> doctrine/doctrine-bundle ###
+  # Base de données MySQL
   database:
-    image: postgres:${POSTGRES_VERSION:-13}-alpine
+    image: mysql:8.0
+    container_name: aliexprass_mysql
+    restart: unless-stopped
     environment:
-      POSTGRES_DB: ${POSTGRES_DB:-app}
-      # You should definitely change the password in production
-      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-ChangeMe}
-      POSTGRES_USER: ${POSTGRES_USER:-symfony}
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: aliexprass
+      MYSQL_USER: symfony
+      MYSQL_PASSWORD: symfony123
+    ports:
+      - "3306:3306"
     volumes:
-      - db-data:/var/lib/postgresql/data:rw
-      # You may use a bind-mounted host directory instead, so that it is harder to accidentally remove the volume and lose all your data!
-      # - ./docker/db/data:/var/lib/postgresql/data:rw
-###< doctrine/doctrine-bundle ###
+      - mysql_data:/var/lib/mysql
+    networks:
+      - aliexprass_network
+
+  # Service PHP/Symfony
+  php:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: aliexprass_php
+    restart: unless-stopped
+    working_dir: /var/www/html
+    volumes:
+      - .:/var/www/html
+      - ./php.ini:/usr/local/etc/php/conf.d/custom.ini
+    depends_on:
+      - database
+    networks:
+      - aliexprass_network
+    environment:
+      - DATABASE_URL=mysql://symfony:symfony123@database:3306/aliexprass?serverVersion=8.0
+
+  # Serveur web Nginx
+  nginx:
+    image: nginx:alpine
+    container_name: aliexprass_nginx
+    restart: unless-stopped
+    ports:
+      - "8000:80"
+      - "8001:443"
+    volumes:
+      - .:/var/www/html
+      - ./docker/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
+    depends_on:
+      - php
+    networks:
+      - aliexprass_network
+
+  # Service de mail pour le développement
+  mailcatcher:
+    image: schickling/mailcatcher
+    container_name: aliexprass_mail
+    restart: unless-stopped
+    ports:
+      - "1080:1080"
+      - "1025:1025"
+    networks:
+      - aliexprass_network
 
 volumes:
-###> doctrine/doctrine-bundle ###
-  db-data:
-###< doctrine/doctrine-bundle ###
+  mysql_data:
+
+networks:
+  aliexprass_network:
+    driver: bridge

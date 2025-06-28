@@ -24,7 +24,7 @@ class Carrier
     #[ORM\Column(type: 'float')]
     private $price;
 
-    #[ORM\Column(type: 'datetime')]
+    #[ORM\Column(type: 'datetime', name: 'createdAt')]
     private $createdAt;
 
     #[ORM\Column(type: 'datetime', nullable: true)]

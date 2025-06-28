@@ -27,7 +27,7 @@ class ReviewsProduct
     #[ORM\JoinColumn(nullable: false)]
     private $product;
 
-    #[ORM\Column]
+    #[ORM\Column(name: 'created_at')]
     private ?\DateTimeImmutable $created_at = null;
 
     public function __construct()
