@@ -1,2 +1,2 @@
 # AliExprass
-Site Ecommerce développé sous Symfony 6 + Bootstrap
+Site Ecommerce développé sous Symfony 7 + Bootstrap
