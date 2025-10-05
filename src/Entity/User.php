@@ -11,84 +11,76 @@ use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 
-#[UniqueEntity(fields: ['email'], message: 'Email déjà utilisé')]
+#[UniqueEntity(fields: ['email'], message: 'Email dÃ©jÃ  utilisÃ©')]
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 180, unique: true)]
-    private $email;
+    #[ORM\Column(length: 180, unique: true)]
+    private ?string $email = null;
 
     #[ORM\Column(type: 'json')]
-    private $roles = [];
+    private array $roles = [];
 
-    #[ORM\Column(type: 'string')]
-    private $password;
+    #[ORM\Column]
+    private ?string $password = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $username;
+    #[ORM\Column(length: 255)]
+    private ?string $username = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $firstname;
+    #[ORM\Column(length: 255)]
+    private ?string $firstname = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $lastname;
+    #[ORM\Column(length: 255)]
+    private ?string $lastname = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isVerified = false;
+    private bool $isVerified = false;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Address::class)]
-    private $addresses;
+    private Collection $addresses;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: ReviewsProduct::class)]
-    private $reviewsProducts;
+    private Collection $reviewsProducts;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Cart::class)]
+    private Collection $carts;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Order::class)]
-    private $orders;
+    private Collection $orders;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Wishlist::class)]
     private Collection $wishlists;
 
-    #[Pure] public function __construct()
+    #[Pure]
+    public function __construct()
     {
         $this->addresses = new ArrayCollection();
         $this->reviewsProducts = new ArrayCollection();
+        $this->carts = new ArrayCollection();
         $this->orders = new ArrayCollection();
         $this->wishlists = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string
-     */
     public function getFullName(): string
     {
-        return $this->firstname. ' ' . $this->lastname;
+        return sprintf('%s %s', $this->firstname ?? '', $this->lastname ?? '');
     }
 
-    /**
-     * @return string|null
-     */
     public function getEmail(): ?string
     {
         return $this->email;
     }
 
-    /**
-     * @param string $email
-     * @return $this
-     */
     public function setEmail(string $email): self
     {
         $this->email = $email;
@@ -96,32 +88,19 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * A visual identifier that represents this user.
-     *
-     * @see UserInterface
-     */
     public function getUserIdentifier(): string
     {
         return (string) $this->email;
     }
 
-    /**
-     * @see UserInterface
-     */
     public function getRoles(): array
     {
         $roles = $this->roles;
-        // guarantee every user at least has ROLE_USER
         $roles[] = 'ROLE_USER';
 
-        return array_unique($roles);
+        return array_values(array_unique($roles));
     }
 
-    /**
-     * @param array $roles
-     * @return $this
-     */
     public function setRoles(array $roles): self
     {
         $this->roles = $roles;
@@ -129,18 +108,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see PasswordAuthenticatedUserInterface
-     */
-    public function getPassword(): string
+    public function getPassword(): ?string
     {
         return $this->password;
     }
 
-    /**
-     * @param string $password
-     * @return $this
-     */
     public function setPassword(string $password): self
     {
         $this->password = $password;
@@ -148,27 +120,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @see UserInterface
-     */
-    public function eraseCredentials()
+    public function eraseCredentials(): void
     {
         // If you store any temporary, sensitive data on the user, clear it here
         // $this->plainPassword = null;
     }
 
-    /**
-     * @return string|null
-     */
     public function getUsername(): ?string
     {
         return $this->username;
     }
 
-    /**
-     * @param string $username
-     * @return $this
-     */
     public function setUsername(string $username): self
     {
         $this->username = $username;
@@ -176,18 +138,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFirstname(): ?string
     {
         return $this->firstname;
     }
 
-    /**
-     * @param string $firstname
-     * @return $this
-     */
     public function setFirstname(string $firstname): self
     {
         $this->firstname = $firstname;
@@ -195,18 +150,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getLastname(): ?string
     {
         return $this->lastname;
     }
 
-    /**
-     * @param string $lastname
-     * @return $this
-     */
     public function setLastname(string $lastname): self
     {
         $this->lastname = $lastname;
@@ -214,18 +162,11 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    /**
-     * @return bool
-     */
     public function isVerified(): bool
     {
         return $this->isVerified;
     }
 
-    /**
-     * @param bool $isVerified
-     * @return $this
-     */
     public function setIsVerified(bool $isVerified): self
     {
         $this->isVerified = $isVerified;
@@ -234,34 +175,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Address>
      */
     public function getAddresses(): Collection
     {
         return $this->addresses;
     }
 
-    /**
-     * @param Address $address
-     * @return $this
-     */
     public function addAddress(Address $address): self
     {
         if (!$this->addresses->contains($address)) {
-            $this->addresses[] = $address;
+            $this->addresses->add($address);
             $address->setUser($this);
         }
 
         return $this;
     }
 
-    /**
-     * @param Address $address
-     * @return $this
-     */
     public function removeAddress(Address $address): self
     {
-        // set the owning side to null (unless already changed)
         if ($this->addresses->removeElement($address) && $address->getUser() === $this) {
             $address->setUser(null);
         }
@@ -270,34 +202,25 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, ReviewsProduct>
      */
     public function getReviewsProducts(): Collection
     {
         return $this->reviewsProducts;
     }
 
-    /**
-     * @param ReviewsProduct $reviewsProduct
-     * @return $this
-     */
     public function addReviewsProduct(ReviewsProduct $reviewsProduct): self
     {
         if (!$this->reviewsProducts->contains($reviewsProduct)) {
-            $this->reviewsProducts[] = $reviewsProduct;
+            $this->reviewsProducts->add($reviewsProduct);
             $reviewsProduct->setUser($this);
         }
 
         return $this;
     }
 
-    /**
-     * @param ReviewsProduct $reviewsProduct
-     * @return $this
-     */
     public function removeReviewsProduct(ReviewsProduct $reviewsProduct): self
     {
-        // set the owning side to null (unless already changed)
         if ($this->reviewsProducts->removeElement($reviewsProduct) && $reviewsProduct->getUser() === $this) {
             $reviewsProduct->setUser(null);
         }
@@ -306,34 +229,52 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, Cart>
      */
-    public function getOrders(): Collection
+    public function getCarts(): Collection
     {
-        return $this->orders;
+        return $this->carts;
     }
 
-    /**
-     * @param Order $order
-     * @return $this
-     */
-    public function addOrder(Order $order): self
+    public function addCart(Cart $cart): self
     {
-        if (!$this->orders->contains($order)) {
-            $this->orders[] = $order;
-            $order->setUser($this);
+        if (!$this->carts->contains($cart)) {
+            $this->carts->add($cart);
+            $cart->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCart(Cart $cart): self
+    {
+        if ($this->carts->removeElement($cart) && $cart->getUser() === $this) {
+            $cart->setUser(null);
         }
 
         return $this;
     }
 
     /**
-     * @param Order $order
-     * @return $this
+     * @return Collection<int, Order>
      */
+    public function getOrders(): Collection
+    {
+        return $this->orders;
+    }
+
+    public function addOrder(Order $order): self
+    {
+        if (!$this->orders->contains($order)) {
+            $this->orders->add($order);
+            $order->setUser($this);
+        }
+
+        return $this;
+    }
+
     public function removeOrder(Order $order): self
     {
-        // set the owning side to null (unless already changed)
         if ($this->orders->removeElement($order) && $order->getUser() === $this) {
             $order->setUser(null);
         }
@@ -361,11 +302,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     public function removeWishlist(Wishlist $wishlist): self
     {
-        if ($this->wishlists->removeElement($wishlist)) {
-            // set the owning side to null (unless already changed)
-            if ($wishlist->getUser() === $this) {
-                $wishlist->setUser(null);
-            }
+        if ($this->wishlists->removeElement($wishlist) && $wishlist->getUser() === $this) {
+            $wishlist->setUser(null);
         }
 
         return $this;

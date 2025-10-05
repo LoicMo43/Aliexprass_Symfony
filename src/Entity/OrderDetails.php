@@ -10,51 +10,35 @@ class OrderDetails
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $productName = null;
+
+    #[ORM\Column(type: 'float')]
+    private ?float $productPrice = null;
+
     #[ORM\Column(type: 'integer')]
-    private $id;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $productName;
+    private ?int $quantity = null;
 
     #[ORM\Column(type: 'float')]
-    private $productPrice;
-
-    #[ORM\Column(type: 'integer')]
-    private $quantity;
-
-    #[ORM\Column(type: 'float')]
-    private $subTotalHT;
-
-    #[ORM\Column(type: 'float')]
-    private $taxe = 0;
-
-    #[ORM\Column(type: 'float')]
-    private $subTotalTTC;
+    private ?float $subTotal = null;
 
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderDetails')]
     #[ORM\JoinColumn(nullable: false)]
-    private $orders;
+    private ?Order $orders = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getProductName(): ?string
     {
         return $this->productName;
     }
 
-    /**
-     * @param string $productName
-     * @return $this
-     */
     public function setProductName(string $productName): self
     {
         $this->productName = $productName;
@@ -62,37 +46,23 @@ class OrderDetails
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProductPrice(): ?string
+    public function getProductPrice(): ?float
     {
         return $this->productPrice;
     }
 
-    /**
-     * @param string $productPrice
-     * @return $this
-     */
-    public function setProductPrice(string $productPrice): self
+    public function setProductPrice(float $productPrice): self
     {
         $this->productPrice = $productPrice;
 
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     * @return $this
-     */
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
@@ -100,75 +70,23 @@ class OrderDetails
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getSubTotalHT(): ?float
+    public function getSubTotal(): ?float
     {
-        return $this->subTotalHT;
+        return $this->subTotal;
     }
 
-    /**
-     * @param float $subTotalHT
-     * @return $this
-     */
-    public function setSubTotalHT(float $subTotalHT): self
+    public function setSubTotal(float $subTotal): self
     {
-        $this->subTotalHT = $subTotalHT;
+        $this->subTotal = $subTotal;
 
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getTaxe(): ?float
-    {
-        return $this->taxe;
-    }
-
-    /**
-     * @param float $taxe
-     * @return $this
-     */
-    public function setTaxe(float $taxe): self
-    {
-        $this->taxe = $taxe;
-
-        return $this;
-    }
-
-    /**
-     * @return float|null
-     */
-    public function getSubTotalTTC(): ?float
-    {
-        return $this->subTotalTTC;
-    }
-
-    /**
-     * @param float $subTotalTTC
-     * @return $this
-     */
-    public function setSubTotalTTC(float $subTotalTTC): self
-    {
-        $this->subTotalTTC = $subTotalTTC;
-
-        return $this;
-    }
-
-    /**
-     * @return Order|null
-     */
     public function getOrders(): ?Order
     {
         return $this->orders;
     }
 
-    /**
-     * @param Order|null $orders
-     * @return $this
-     */
     public function setOrders(?Order $orders): self
     {
         $this->orders = $orders;

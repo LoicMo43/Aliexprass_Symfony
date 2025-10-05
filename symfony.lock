@@ -91,17 +91,11 @@
     "egulias/email-validator": {
         "version": "3.1.2"
     },
-    "friendsofphp/proxy-manager-lts": {
-        "version": "v1.0.5"
-    },
     "knplabs/knp-components": {
         "version": "v3.5.0"
     },
     "knplabs/knp-paginator-bundle": {
         "version": "v5.8.0"
-    },
-    "laminas/laminas-code": {
-        "version": "4.5.1"
     },
     "monolog/monolog": {
         "version": "2.3.5"
@@ -224,18 +218,6 @@
     },
     "sebastian/version": {
         "version": "3.0.2"
-    },
-    "sensio/framework-extra-bundle": {
-        "version": "6.2",
-        "recipe": {
-            "repo": "github.com/symfony/recipes",
-            "branch": "master",
-            "version": "5.2",
-            "ref": "fb7e19da7f013d0d422fa9bce16f5c510e27609b"
-        },
-        "files": [
-            "./config/packages/sensio_framework_extra.yaml"
-        ]
     },
     "stripe/stripe-php": {
         "version": "v7.114.0"
@@ -487,9 +469,6 @@
     "symfony/property-info": {
         "version": "v6.0.2"
     },
-    "symfony/proxy-manager-bridge": {
-        "version": "v6.0.2"
-    },
     "symfony/requirements-checker": {
         "version": "2.0",
         "recipe": {
@@ -582,6 +561,18 @@
     },
     "symfony/uid": {
         "version": "v6.0.2"
+    },
+    "symfony/ux-twig-component": {
+        "version": "2.30",
+        "recipe": {
+            "repo": "github.com/symfony/recipes",
+            "branch": "main",
+            "version": "2.13",
+            "ref": "f367ae2a1faf01c503de2171f1ec22567febeead"
+        },
+        "files": [
+            "./config/packages/twig_component.yaml"
+        ]
     },
     "symfony/validator": {
         "version": "6.0",

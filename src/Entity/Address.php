@@ -11,57 +11,47 @@ class Address
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $fullname;
+    #[ORM\Column(length: 255)]
+    private ?string $fullname = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $compagny;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $compagny = null;
 
     #[ORM\Column(type: 'text')]
-    private $address;
+    private ?string $address = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $complement;
+    private ?string $complement = null;
 
     #[ORM\Column(type: 'integer')]
-    private $phone;
+    private ?int $phone = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $city;
+    #[ORM\Column(length: 255)]
+    private ?string $city = null;
 
     #[ORM\Column(type: 'integer')]
-    private $codePostal;
+    private ?int $codePostal = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $country;
+    #[ORM\Column(length: 255)]
+    private ?string $country = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'addresses')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    private ?User $user = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFullname(): ?string
     {
         return $this->fullname;
     }
 
-    /**
-     * @param string $fullname
-     * @return $this
-     */
     public function setFullname(string $fullname): self
     {
         $this->fullname = $fullname;
@@ -69,18 +59,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCompagny(): ?string
     {
         return $this->compagny;
     }
 
-    /**
-     * @param string|null $compagny
-     * @return $this
-     */
     public function setCompagny(?string $compagny): self
     {
         $this->compagny = $compagny;
@@ -88,18 +71,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getAddress(): ?string
     {
         return $this->address;
     }
 
-    /**
-     * @param string $address
-     * @return $this
-     */
     public function setAddress(string $address): self
     {
         $this->address = $address;
@@ -107,18 +83,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getComplement(): ?string
     {
         return $this->complement;
     }
 
-    /**
-     * @param string|null $complement
-     * @return $this
-     */
     public function setComplement(?string $complement): self
     {
         $this->complement = $complement;
@@ -126,18 +95,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getPhone(): ?int
     {
         return $this->phone;
     }
 
-    /**
-     * @param int $phone
-     * @return $this
-     */
     public function setPhone(int $phone): self
     {
         $this->phone = $phone;
@@ -145,18 +107,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCity(): ?string
     {
         return $this->city;
     }
 
-    /**
-     * @param string $city
-     * @return $this
-     */
     public function setCity(string $city): self
     {
         $this->city = $city;
@@ -164,18 +119,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getCodePostal(): ?int
     {
         return $this->codePostal;
     }
 
-    /**
-     * @param int $codePostal
-     * @return $this
-     */
     public function setCodePostal(int $codePostal): self
     {
         $this->codePostal = $codePostal;
@@ -183,18 +131,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCountry(): ?string
     {
         return $this->country;
     }
 
-    /**
-     * @param string $country
-     * @return $this
-     */
     public function setCountry(string $country): self
     {
         $this->country = $country;
@@ -202,18 +143,11 @@ class Address
         return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User|null $user
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -221,22 +155,18 @@ class Address
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    #[Pure] public function __toString(): string
+    #[Pure]
+    public function __toString(): string
     {
-        $result = $this->fullname. "[spr]";
+        $parts = [
+            $this->fullname,
+            $this->compagny,
+            $this->address,
+            $this->complement,
+            sprintf('%s - %s', $this->codePostal, $this->city),
+            $this->country,
+        ];
 
-        if ($this->getCompagny()) {
-            $result = $this->compagny. "[spr]";
-        }
-
-        $result .= $this->address . "[spr]";
-        $result .= $this->complement . "[spr]";
-        $result .= $this->codePostal. " - ". $this->city ."[spr]";
-        $result .= $this->country. "[spr]";
-
-        return $result;
+        return implode('[spr]', array_filter($parts));
     }
 }

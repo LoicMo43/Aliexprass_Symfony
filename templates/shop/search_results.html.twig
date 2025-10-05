@@ -1,0 +1,23 @@
+{% extends "base.html.twig" %}
+
+{% block title %}
+    Résultats pour "{{ query }}" | AliExprass
+{% endblock %}
+
+{% block body %}
+    <div class="container py-5 search-results">
+        <h1 class="mb-4">Résultats pour "{{ query }}"</h1>
+
+        {% if products is not empty %}
+            <div class="row shop_container">
+                {% for product in products %}
+                    {{ include('partials/product.html.twig', { product: product }) }}
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="alert alert-info" role="status">
+                Aucun produit ne correspond à votre recherche pour le moment.
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

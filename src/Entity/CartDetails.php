@@ -10,51 +10,41 @@ class CartDetails
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $productName = null;
+
+    #[ORM\Column(type: 'float')]
+    private ?float $productPrice = null;
+
     #[ORM\Column(type: 'integer')]
-    private $id;
-
-    #[ORM\Column(type: 'string', length: 255)]
-    private $productName;
+    private ?int $quantity = null;
 
     #[ORM\Column(type: 'float')]
-    private $productPrice;
-
-    #[ORM\Column(type: 'integer')]
-    private $quantity;
+    private ?float $subTotalHT = null;
 
     #[ORM\Column(type: 'float')]
-    private $subTotalHT;
+    private float $taxe = 0.0;
 
     #[ORM\Column(type: 'float')]
-    private $taxe = 0;
-
-    #[ORM\Column(type: 'float')]
-    private $subTotalTTC;
+    private ?float $subTotalTTC = null;
 
     #[ORM\ManyToOne(targetEntity: Cart::class, inversedBy: 'CartDetails')]
     #[ORM\JoinColumn(nullable: false)]
-    private $Carts;
+    private ?Cart $Carts = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getProductName(): ?string
     {
         return $this->productName;
     }
 
-    /**
-     * @param string $productName
-     * @return $this
-     */
     public function setProductName(string $productName): self
     {
         $this->productName = $productName;
@@ -62,37 +52,23 @@ class CartDetails
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
-    public function getProductPrice(): ?string
+    public function getProductPrice(): ?float
     {
         return $this->productPrice;
     }
 
-    /**
-     * @param string $productPrice
-     * @return $this
-     */
-    public function setProductPrice(string $productPrice): self
+    public function setProductPrice(float $productPrice): self
     {
         $this->productPrice = $productPrice;
 
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     * @return $this
-     */
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
@@ -100,18 +76,11 @@ class CartDetails
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getSubTotalHT(): ?float
     {
         return $this->subTotalHT;
     }
 
-    /**
-     * @param float $subTotalHT
-     * @return $this
-     */
     public function setSubTotalHT(float $subTotalHT): self
     {
         $this->subTotalHT = $subTotalHT;
@@ -119,18 +88,11 @@ class CartDetails
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
-    public function getTaxe(): ?float
+    public function getTaxe(): float
     {
-        return $this->taxe*100;
+        return $this->taxe;
     }
 
-    /**
-     * @param float $taxe
-     * @return $this
-     */
     public function setTaxe(float $taxe): self
     {
         $this->taxe = $taxe;
@@ -138,18 +100,11 @@ class CartDetails
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getSubTotalTTC(): ?float
     {
         return $this->subTotalTTC;
     }
 
-    /**
-     * @param float $subTotalTTC
-     * @return $this
-     */
     public function setSubTotalTTC(float $subTotalTTC): self
     {
         $this->subTotalTTC = $subTotalTTC;
@@ -157,18 +112,11 @@ class CartDetails
         return $this;
     }
 
-    /**
-     * @return Cart|null
-     */
     public function getCarts(): ?Cart
     {
         return $this->Carts;
     }
 
-    /**
-     * @param Cart|null $Carts
-     * @return $this
-     */
     public function setCarts(?Cart $Carts): self
     {
         $this->Carts = $Carts;

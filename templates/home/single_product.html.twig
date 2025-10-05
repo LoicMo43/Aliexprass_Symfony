@@ -1,207 +1,166 @@
-{% extends 'base.html.twig' %}
+{% extends "base.html.twig" %}
 
-{% block title %}Accueil{% endblock %}
+{% block title %}{{ product.name }} - AliExprass{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/assets/home.css') }}">
+    <link rel="stylesheet" href="{{ asset('build/assets/product.css') }}">
+{% endblock %}
+
+{% set route_name = app.request.attributes.get('_route') %}
+{% set categories = [] %}
+{% for category in product.category %}
+    {% set categories = categories|merge([category.name]) %}
+{% endfor %}
+
+{% set related_products = [] %}
+{% for category in product.category %}
+    {% for productRelated in category.products %}
+        {% if productRelated.id != product.id %}
+            {% set exists = false %}
+            {% for existing in related_products %}
+                {% if existing.id == productRelated.id %}
+                    {% set exists = true %}
+                {% endif %}
+            {% endfor %}
+            {% if not exists %}
+                {% set related_categories = [] %}
+                {% for relatedCategory in productRelated.category %}
+                    {% set related_categories = related_categories|merge([relatedCategory.name]) %}
+                {% endfor %}
+                {% set related_products = related_products|merge([{
+                    id: productRelated.id,
+                    name: productRelated.name,
+                    slug: productRelated.slug,
+                    image: asset('assets/uploads/products/' ~ productRelated.image),
+                    price: productRelated.price,
+                    categories: related_categories,
+                    tags: productRelated.tags,
+                    isBestSeller: productRelated.isBestSeller,
+                    isNewArrival: productRelated.isNewArrival,
+                    isFeatured: productRelated.isFeatured,
+                    isSpecialOffer: productRelated.isSpecialOffer
+                }]) %}
+            {% endif %}
+        {% endif %}
+    {% endfor %}
+{% endfor %}
+{% set related_products = related_products|slice(0, 8) %}
+
+{% set review_items = [] %}
+{% for review in reviews %}
+    {% set review_items = review_items|merge([{
+        id: review.id,
+        note: review.note,
+        comment: review.comment,
+        createdAt: review.createdAt ? review.createdAt|date('c') : null,
+        author: review.user ? (review.user.firstname ~ ' ' ~ review.user.lastname) : 'Client Aliexprass',
+        canDelete: canDeleteReview[review.id]|default(false),
+        deleteUrl: canDeleteReview[review.id]|default(false) ? path('delete_review', {'reviewId': review.id}) : null
+    }]) %}
+{% endfor %}
+
+{% set product_data = {
+    id: product.id,
+    name: product.name,
+    slug: product.slug,
+    image: asset('assets/uploads/products/' ~ product.image),
+    price: product.price,
+    compareAtPrice: (product.price * 120) // 100,
+    quantity: product.quantity,
+    description: product.description,
+    moreInformations: product.moreInformations,
+    tags: product.tags,
+    categories: categories,
+    currency: 'EUR',
+    isBestSeller: product.isBestSeller,
+    isNewArrival: product.isNewArrival,
+    isFeatured: product.isFeatured,
+    isSpecialOffer: product.isSpecialOffer,
+    links: {
+        buy: path('cart_buy', {'id': product.id}),
+        add: path('cart_add', {
+            'id': product.id,
+            'slug': product.slug,
+            'routeName': route_name
+        })
+    }
+} %}
+
+{% set user_data = {
+    logged: app.user ? true : false,
+    loginUrl: path('app_login')
+} %}
+
+{% set json_options = constant('JSON_UNESCAPED_UNICODE') b-or constant('JSON_UNESCAPED_SLASHES') %}
+{% set react_props = {
+    product: product_data,
+    reviews: review_items,
+    related: related_products,
+    user: user_data
+} %}
 
 {% block body %}
-    <div class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-6 col-md-6 mb-4 mb-md-0">
-                    <div class="product-image">
-                        <div class="product_img_box">
-                            <img id="product_img" src='/assets/uploads/products/{{ product.image }}' data-zoom-image="/assets/uploads/products/{{ product.image }}" alt=" {{  product.name }}" />
-                            <a href="#" class="product_img_zoom" title="Zoom">
-                                <span class="linearicons-zoom-in"></span>
-                            </a>
-                        </div>
-                    </div>
+    <div class="container">
+        <div
+            id="react-product-root"
+            data-props="{{ react_props|json_encode(json_options)|e('html_attr') }}"
+        >
+            <div class="react-home-fallback text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Chargement...</span>
                 </div>
-                <div class="col-lg-6 col-md-6">
-                    <div class="pr_detail">
-                        <div class="product_description">
-                            <h4 class="product_title"><a href="#">{{ product.name }}</a></h4>
-                            <div class="product_price">
-                                <span class="price">${{ product.price / 100 }}</span>
-                                <del>${{ product.price * 1.35 / 100 }}</del>
-                                <div class="on_sale">
-                                    <span>35% de réduction</span>
-                                </div>
-                            </div>
-                            <div class="rating_wrap">
-                                <div class="rating">
-                                    <div class="product_rate" style="width:80%"></div>
-                                </div>
-                                <span class="rating_num">({{ reviews|length }})</span>
-                            </div>
-                            <div class="pr_desc">
-                                <p>{{ product.description | raw }}</p>
-                            </div>
-                            <div class="product_sort_info">
-                                <ul>
-                                    <li><i class="linearicons-shield-check"></i>1 an de garantie de la marque</li>
-                                    <li><i class="linearicons-sync"></i>Politique de retour de 30 jours</li>
-                                    <li><i class="linearicons-bag-dollar"></i>Livraison contre remboursement possible</li>
-                                    <li>{% if product.quantity > 0 %}
-                                            <i class="linearicons-cart"></i>
-                                            <span class="avaibility">EN STOCK</span>
-                                        {% else %}
-                                            <i class="linearicons-cart"></i>
-                                            <span class="avaibility">HORS STOCK</span>
-                                        {% endif %}
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <hr />
-                        <div class="container">
-                            <div class="row">
-                                <div class="cart_extra">
-                                    <div class="col-lg-8 cart_btn">
-                                      {% set route_name = app.current_route %}  {#  Récupère le nom de la route actuelle et le stocke dans la variable "route_name" #}
-                                        {% if product.quantity > 0 %}  {# Vérifie si la quantité du produit est supérieure à 0 #}
-                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart mb-2" type="button">
-                                                <i class="icon-basket-loaded"></i>ACHETER MAINTENANT </a>  {# Affiche un lien pour acheter le produit immédiatement #}
-                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart" type="button">
-                                                <i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>  {#  Affiche un lien pour ajouter le produit au panier #}
-                                        {% else %}
-
-                                            <a href="{{ path('cart_buy', {'id': product.id}) }}" class="btn btn-fill-out btn-addtocart disabled mb-2" type="button"><i class="icon-basket-loaded"></i>ACHETER MAINTENANT</a>
-                                            <a href="{{ path('cart_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}" class="btn btn-fill-out btn-addtocart disabled" type="button"><i class="icon-basket-loaded"></i>AJOUTER AU PANIER</a>
-                                        {% endif %}
-                                    </div>
-                                    <div class="col-lg-4 cart_btn">
-                                        <a class="add_compare" href="#"><i class="icon-shuffle"></i></a>
-                                        <a class="add_wishlist" href="{{ path('wishlist_add', {'id': product.id, 'slug': product.slug, 'routeName': route_name}) }}"><i class="icon-heart"></i></a>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <hr />
-                        <ul class="product-meta">
-                            <li>SKU: <a href="#">BE45VGRT</a></li>
-                            <li>Categorie: <a href="#">
-                                    {% for category in product.category %}
-                                        {{ category.name }}
-                                    {% endfor %}
-                                </a></li>
-                            <li>Tags: {{ product.tags }} </li>
-                        </ul>
-
-                        <div class="product_share">
-                            <span>Partager:</span>
-                            <ul class="social_icons">
-                                <li><a href="#"><i class="ion-social-facebook"></i></a></li>
-                                <li><a href="#"><i class="ion-social-twitter"></i></a></li>
-                                <li><a href="#"><i class="ion-social-googleplus"></i></a></li>
-                                <li><a href="#"><i class="ion-social-youtube-outline"></i></a></li>
-                                <li><a href="#"><i class="ion-social-instagram-outline"></i></a></li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="large_divider clearfix"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="tab-style3">
-                        <ul class="nav nav-tabs" role="tablist">
-                            <li class="nav-item">
-                                <a class="nav-link active" id="Description-tab" data-toggle="tab" href="#Description" role="tab" aria-controls="Description" aria-selected="true">Description</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="Additional-info-tab" data-toggle="tab" href="#Additional-info" role="tab" aria-controls="Additional-info" aria-selected="false">Informations complémentaires</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" id="Reviews-tab" data-toggle="tab" href="#Reviews" role="tab" aria-controls="Reviews" aria-selected="false">Commentaires ({{ reviews|length }})</a>
-                            </li>
-                        </ul>
-                        <div class="tab-content shop_info_tab">
-                            <div class="tab-pane fade show active" id="Description" role="tabpanel" aria-labelledby="Description-tab">
-                                <p>{{ product.description | raw }}</p>
-                            </div>
-
-                            <div class="tab-pane fade" id="Reviews" role="tabpanel" aria-labelledby="Reviews-tab">
-                                <div class="comments">
-                                    <h5 class="product_tab_title">{{ reviews|length }} Avis pour <span>{{ product.name }}</span></h5>
-                                    <ul class="list_none comment_list mt-4">
-                                        {% if reviews is not empty %}
-                                            {% for review in reviews %}
-                                                <li>
-                                                <div class="comment_img">
-                                                    <img src="http://placehold.it/300" alt="user2"/>
-                                                </div>
-                                                <div class="comment_block">
-                                                    <div class="rating_wrap">
-                                                        <div class="rating">
-                                                            <div class="product_rate" style="width:{{ review.note }}%"></div>
-                                                        </div>
-                                                    </div>
-                                                    <p class="customer_meta">
-                                                        <span class="review_author">{{ review.user.firstname }} {{ review.user.lastname }}</span>
-                                                        <span class="comment-date">{{ review.createdAt.format('d/m/Y') }}</span>
-                                                    </p>
-                                                    <div class="description">
-                                                        <p>{{ review.comment }}</p>
-                                                    </div>
-                                                    {% if canDeleteReview[review.id] %}
-                                                        <a href="{{ path('delete_review', { 'reviewId': review.id }) }}" class="btn btn-fill-out mb-2" type="button">Supprimer l'avis</a>
-                                                    {% endif %}
-                                                </div>
-                                            </li>
-                                            {% endfor %}
-                                            {% else %}
-                                            <div>
-                                                <h1>Aucun avis sur ce produit</h1>
-                                            </div>
-                                        {% endif %}
-                                    </ul>
-                                </div>
-                                <div class="review_form field_form">
-                                    <h5>Ajouter un avis</h5>
-                                    {% if app.user %}
-                                        {{ form_start(form) }}
-                                            {{ form_widget(form) }}
-                                            <button class="btn btn-border-fill btn-block">{{ button_label|default('Soumettre') }}</button>
-                                        {{ form_end(form) }}
-                                        {% else %}
-                                            <a href="{{ path('app_login') }}" class="btn btn-fill-out mb-2" type="button"></i>SE CONNECTER</a>
-                                    {% endif %}
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="small_divider"></div>
-                    <div class="divider"></div>
-                    <div class="medium_divider"></div>
-                </div>
-            </div>
-            <div class="row">
-                <div class="col-12">
-                    <div class="heading_s1">
-                        <h3>Produits de la même gamme</h3>
-                    </div>
-                    <div class="releted_product_slider carousel_slider owl-carousel owl-theme" data-margin="20" data-responsive='{"0":{"items": "1"}, "481":{"items": "2"}, "768":{"items": "3"}, "1199":{"items": "4"}}'>
-                        {% for category in product.category %}
-                            {% for productRelated in category.products %}
-                                {% if product is not same as(productRelated) %}
-                                    {{ include('partials/product_item.html.twig', {'product': productRelated}) }}
-                                {% endif %}
-                            {% endfor %}
-                        {% endfor %}
-                    </div>
-                </div>
+                <p class="mt-3 mb-0">Chargement des informations produit...</p>
             </div>
         </div>
+
+        <section id="review-form" class="product-review-form">
+            <h2 class="product-review-form__title">Partagez votre avis</h2>
+            <p class="product-review-form__description">
+                Votre retour aide la communaute a faire les meilleurs choix.
+            </p>
+            {% if app.user %}
+                {{ form_start(form, {
+                    attr: {
+                        class: 'product-review-form__form'
+                    }
+                }) }}
+                    <div class="product-review-form__group">
+                        {{ form_label(form.note) }}
+                        {{ form_widget(form.note, {
+                            attr: {
+                                class: 'product-review-form__range',
+                                min: 0,
+                                max: 100,
+                                step: 5
+                            }
+                        }) }}
+                        {{ form_errors(form.note) }}
+                    </div>
+                    <div class="product-review-form__group">
+                        {{ form_label(form.comment) }}
+                        {{ form_widget(form.comment, {
+                            attr: {
+                                class: 'product-review-form__textarea',
+                                rows: 4
+                            }
+                        }) }}
+                        {{ form_errors(form.comment) }}
+                    </div>
+                    {{ form_rest(form) }}
+                    <button class="product-review-form__submit btn btn-fill-out">{{ button_label|default('Soumettre') }}</button>
+                {{ form_end(form, {'render_rest': false}) }}
+            {% else %}
+                <a href="{{ path('app_login') }}" class="product-hero__button product-hero__button--ghost">
+                    Se connecter pour laisser un avis
+                </a>
+            {% endif %}
+        </section>
     </div>
+{% endblock %}
 
-
-
-{% endblock body %}
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('build/assets/product.js') }}"></script>
+{% endblock %}

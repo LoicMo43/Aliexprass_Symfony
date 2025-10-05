@@ -3,7 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ProductRepository;
-use DateTime;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -16,55 +16,55 @@ class Product
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    #[Assert\NotBlank()]
+    #[ORM\Column(length: 255)]
+    #[Assert\NotBlank]
     #[Assert\Length(min: 2, max: 50)]
-    private $name;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'text')]
-    private $description;
+    private ?string $description = null;
 
     #[ORM\Column(type: 'text')]
-    private $moreInformations;
+    private ?string $moreInformations = null;
 
     #[ORM\Column(type: 'float')]
-    private $price;
+    private ?float $price = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isBestSeller = false;
+    private ?bool $isBestSeller = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isNewArrival = false;
+    private ?bool $isNewArrival = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isFeatured = false;
+    private ?bool $isFeatured = false;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isSpecialOffer = false;
+    private ?bool $isSpecialOffer = false;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $image;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     #[ORM\ManyToMany(targetEntity: Categories::class, inversedBy: 'products')]
-    private $category;
+    private Collection $category;
 
     #[ORM\OneToMany(mappedBy: 'product', targetEntity: ReviewsProduct::class)]
-    private $reviewsProducts;
+    private Collection $reviewsProducts;
 
     #[ORM\Column(type: 'integer')]
-    private $quantity;
+    private ?int $quantity = null;
 
-    #[ORM\Column(type: 'datetime', name: 'createdAt')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private DateTimeInterface $createdAt;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $tags;
+    private ?string $tags = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $slug;
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
 
     #[ORM\ManyToMany(targetEntity: Wishlist::class, mappedBy: 'products')]
     private Collection $wishlists;
@@ -73,30 +73,20 @@ class Product
     {
         $this->category = new ArrayCollection();
         $this->reviewsProducts = new ArrayCollection();
-        $this->createdAt = new DateTime();
+        $this->createdAt = new DateTimeImmutable();
         $this->wishlists = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getName(): ?string
     {
         return $this->name;
     }
 
-    /**
-     * @param string $name
-     * @return $this
-     */
     public function setName(string $name): self
     {
         $this->name = $name;
@@ -104,18 +94,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return $this
-     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -123,18 +106,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMoreInformations(): ?string
     {
         return $this->moreInformations;
     }
 
-    /**
-     * @param string $moreInformations
-     * @return $this
-     */
     public function setMoreInformations(string $moreInformations): self
     {
         $this->moreInformations = $moreInformations;
@@ -142,18 +118,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getPrice(): ?float
     {
         return $this->price;
     }
 
-    /**
-     * @param float $price
-     * @return $this
-     */
     public function setPrice(float $price): self
     {
         $this->price = $price;
@@ -161,18 +130,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsBestSeller(): ?bool
     {
         return $this->isBestSeller;
     }
 
-    /**
-     * @param bool|null $isBestSeller
-     * @return $this
-     */
     public function setIsBestSeller(?bool $isBestSeller): self
     {
         $this->isBestSeller = $isBestSeller;
@@ -180,18 +142,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsNewArrival(): ?bool
     {
         return $this->isNewArrival;
     }
 
-    /**
-     * @param bool|null $isNewArrival
-     * @return $this
-     */
     public function setIsNewArrival(?bool $isNewArrival): self
     {
         $this->isNewArrival = $isNewArrival;
@@ -199,18 +154,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsFeatured(): ?bool
     {
         return $this->isFeatured;
     }
 
-    /**
-     * @param bool|null $isFeatured
-     * @return $this
-     */
     public function setIsFeatured(?bool $isFeatured): self
     {
         $this->isFeatured = $isFeatured;
@@ -218,18 +166,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsSpecialOffer(): ?bool
     {
         return $this->isSpecialOffer;
     }
 
-    /**
-     * @param bool|null $isSpecialOffer
-     * @return $this
-     */
     public function setIsSpecialOffer(?bool $isSpecialOffer): self
     {
         $this->isSpecialOffer = $isSpecialOffer;
@@ -237,18 +178,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     * @return $this
-     */
     public function setImage(string $image): self
     {
         $this->image = $image;
@@ -257,66 +191,52 @@ class Product
     }
 
     /**
-     * @return Collection|Categories[]
+     * @return Collection<int, Categories>
      */
-    public function getCategory(): array|Collection
+    public function getCategory(): Collection
     {
         return $this->category;
     }
 
-    /**
-     * @param Categories $category
-     * @return $this
-     */
     public function addCategory(Categories $category): self
     {
         if (!$this->category->contains($category)) {
-            $this->category[] = $category;
+            $this->category->add($category);
+            $category->addProduct($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCategory(Categories $category): self
+    {
+        if ($this->category->removeElement($category)) {
+            $category->removeProduct($this);
         }
 
         return $this;
     }
 
     /**
-     * @param Categories $category
-     * @return $this
-     */
-    public function removeCategory(Categories $category): self
-    {
-        $this->category->removeElement($category);
-
-        return $this;
-    }
-
-    /**
-     * @return Collection
+     * @return Collection<int, ReviewsProduct>
      */
     public function getReviewsProducts(): Collection
     {
         return $this->reviewsProducts;
     }
 
-    /**
-     * @param ReviewsProduct $reviewsProduct
-     * @return $this
-     */
     public function addReviewsProduct(ReviewsProduct $reviewsProduct): self
     {
         if (!$this->reviewsProducts->contains($reviewsProduct)) {
-            $this->reviewsProducts[] = $reviewsProduct;
+            $this->reviewsProducts->add($reviewsProduct);
             $reviewsProduct->setProduct($this);
         }
 
         return $this;
     }
 
-    /**
-     * @param ReviewsProduct $reviewsProduct
-     * @return $this
-     */
     public function removeReviewsProduct(ReviewsProduct $reviewsProduct): self
     {
-        // set the owning side to null (unless already changed)
         if ($this->reviewsProducts->removeElement($reviewsProduct) && $reviewsProduct->getProduct() === $this) {
             $reviewsProduct->setProduct(null);
         }
@@ -324,26 +244,16 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string
-     */
-    #[Pure] public function __toString(): string
+    public function __toString(): string
     {
-        return $this->getName();
+        return $this->getName() ?? '';
     }
 
-    /**
-     * @return int|null
-     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     * @return $this
-     */
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
@@ -351,18 +261,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTimeInterface $createdAt
-     * @return $this
-     */
     public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -370,18 +273,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTags(): ?string
     {
         return $this->tags;
     }
 
-    /**
-     * @param string|null $tags
-     * @return $this
-     */
     public function setTags(?string $tags): self
     {
         $this->tags = $tags;
@@ -389,18 +285,11 @@ class Product
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getSlug(): ?string
     {
         return $this->slug;
     }
 
-    /**
-     * @param string $slug
-     * @return $this
-     */
     public function setSlug(string $slug): self
     {
         $this->slug = $slug;

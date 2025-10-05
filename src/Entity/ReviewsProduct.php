@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\ReviewsProductRepository;
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReviewsProductRepository::class)]
@@ -10,51 +11,41 @@ class ReviewsProduct
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
     #[ORM\Column(type: 'integer')]
-    private $note;
+    private ?int $note = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $comment;
+    private ?string $comment = null;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'reviewsProducts')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    private ?User $user = null;
 
     #[ORM\ManyToOne(targetEntity: Product::class, inversedBy: 'reviewsProducts')]
     #[ORM\JoinColumn(nullable: false)]
-    private $product;
+    private ?Product $product = null;
 
     #[ORM\Column(name: 'created_at')]
-    private ?\DateTimeImmutable $created_at = null;
+    private DateTimeImmutable $created_at;
 
     public function __construct()
     {
-        $this->created_at = new \DateTimeImmutable('now');
+        $this->created_at = new DateTimeImmutable('now');
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return int|null
-     */
     public function getNote(): ?int
     {
         return $this->note;
     }
 
-    /**
-     * @param int $note
-     * @return $this
-     */
     public function setNote(int $note): self
     {
         $this->note = $note;
@@ -62,18 +53,11 @@ class ReviewsProduct
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getComment(): ?string
     {
         return $this->comment;
     }
 
-    /**
-     * @param string|null $comment
-     * @return $this
-     */
     public function setComment(?string $comment): self
     {
         $this->comment = $comment;
@@ -81,18 +65,11 @@ class ReviewsProduct
         return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User|null $user
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -100,18 +77,11 @@ class ReviewsProduct
         return $this;
     }
 
-    /**
-     * @return Product|null
-     */
     public function getProduct(): ?Product
     {
         return $this->product;
     }
 
-    /**
-     * @param Product|null $product
-     * @return $this
-     */
     public function setProduct(?Product $product): self
     {
         $this->product = $product;
@@ -119,12 +89,12 @@ class ReviewsProduct
         return $this;
     }
 
-    public function getCreatedAt(): ?\DateTimeImmutable
+    public function getCreatedAt(): DateTimeImmutable
     {
         return $this->created_at;
     }
 
-    public function setCreatedAt(\DateTimeImmutable $created_at): self
+    public function setCreatedAt(DateTimeImmutable $created_at): self
     {
         $this->created_at = $created_at;
 

@@ -1,87 +1,76 @@
 <?php
 
+declare(strict_types=1);
+
 namespace App\Controller\Product;
 
 use App\Entity\Product;
 use App\Entity\ReviewsProduct;
 use App\Form\ReviewsProductType;
+use App\Repository\ProductRepository;
 use App\Repository\ReviewsProductRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
 class ProductController extends AbstractController
 {
-    /**
-     * Page du produit
-     * @param Product|null $product
-     * @param Request $request
-     * @param EntityManagerInterface $entityManager
-     * @param ReviewsProductRepository $reviewsProductRepository
-     * @param string $slug
-     * @return Response
-     */
     #[Route('/product/{slug}', name: 'product_details')]
-    public function show(?Product $product,  // Définition de la méthode "show" prenant en paramètre un objet Product optionnel
-                         Request $request,  // Objet Request contenant les données de la requête HTTP
-                         EntityManagerInterface $entityManager,  // Objet pour gérer les opérations de persistance avec la base de données
-                         ReviewsProductRepository $reviewsProductRepository,  // Repository pour accéder aux avis des produits
-                         string $slug) : Response {  // Paramètre de chaîne de caractères représentant le slug du produit et renvoyant une réponse HTTP
-
-        if (!$product) {  // Vérification si le produit existe
-            return $this->redirectToRoute('home');  // Redirection vers la page d'accueil si le produit n'existe pas
+    public function show(
+        ?Product $product,
+        Request $request,
+        EntityManagerInterface $entityManager,
+        ReviewsProductRepository $reviewsProductRepository,
+        string $slug
+    ): Response {
+        if (!$product) {
+            return $this->redirectToRoute('home');
         }
 
-        $reviewsProducts = $reviewsProductRepository->findBy(['product' => $product]);  // Récupération des avis du produit depuis le repository
+        $reviewsProducts = $reviewsProductRepository->findBy(['product' => $product]);
 
-        unset($review, $form);  // Suppression des variables $review et $form s'il existent déjà
+        $review = new ReviewsProduct();
+        $form = $this->createForm(ReviewsProductType::class, $review);
+        $form->handleRequest($request);
 
-        $review = new ReviewsProduct();  // Création d'une nouvelle instance de la classe ReviewsProduct
-        $form = $this->createForm(ReviewsProductType::class, $review);  // Création d'un formulaire basé sur le type ReviewsProductType et l'instance de review
-        $form->handleRequest($request);  // Traitement des données du formulaire
+        if ($form->isSubmitted() && $form->isValid()) {
+            $review
+                ->setComment($form->get('comment')->getData())
+                ->setNote($form->get('note')->getData())
+                ->setProduct($product)
+                ->setUser($this->getUser());
 
-        if ($form->isSubmitted() && $form->isValid()) {  // Vérification si le formulaire a été soumis et est valide
-            $review->setComment($form->get('comment')->getData())  // Récupération et configuration du commentaire à partir des données du formulaire
-            ->setNote($form->get('note')->getData())  // Récupération et configuration de la note à partir des données du formulaire
-            ->setProduct($product)  // Définition du produit associé à l'avis
-            ->setUser($this->getUser());  // Définition de l'utilisateur associé à l'avis
+            $entityManager->persist($review);
+            $entityManager->flush();
 
-            $entityManager->persist($review);  // Persistance de l'avis en attente d'être enregistré dans la base de données
-            $entityManager->flush();  // Enregistrement effectif de l'avis dans la base de données
-
-            return $this->redirectToRoute('product_details', ['slug' => $slug]);  // Redirection vers la page de détails du produit
+            return $this->redirectToRoute('product_details', ['slug' => $slug]);
         }
 
-        $canDeleteReview = false;  // Initialisation de la variable $canDeleteReview à false
-
-        foreach ($reviewsProducts as $reviewsProduct) {  // Boucle sur tous les avis du produit
-            if ($this->getUser() && $reviewsProduct->getUser() === $this->getUser()) {  // Vérification si l'utilisateur est connecté et est l'auteur de l'avis
-                $canDeleteReview[$reviewsProduct->getId()] = true;  // Autorisation de suppression de l'avis associé
-            } else {
-                $canDeleteReview[$reviewsProduct->getId()] = false;  // Interdiction de suppression de l'avis associé
-            }
+        $canDeleteReview = [];
+        foreach ($reviewsProducts as $reviewsProduct) {
+            $canDeleteReview[$reviewsProduct->getId()] = $this->getUser() && $reviewsProduct->getUser() === $this->getUser();
         }
 
-        return $this->render("home/single_product.html.twig", [  // Renvoi de la vue "single_product.html.twig" avec les variables à transmettre
+        return $this->render('home/single_product.html.twig', [
             'product' => $product,
             'form' => $form,
             'reviews' => $reviewsProducts,
-            'canDeleteReview' => $canDeleteReview
+            'canDeleteReview' => $canDeleteReview,
         ]);
     }
 
-
     #[Route('/product/delete/{reviewId}', name: 'delete_review')]
-    public function deleteReview(int $reviewId, EntityManagerInterface $entityManager, ReviewsProductRepository $reviewsProductRepository): Response {
+    public function deleteReview(int $reviewId, EntityManagerInterface $entityManager, ReviewsProductRepository $reviewsProductRepository): Response
+    {
         $review = $reviewsProductRepository->find($reviewId);
 
         if (!$review) {
             throw $this->createNotFoundException('Avis introuvable.');
         }
 
-        // Vérifier si l'utilisateur connecté est l'auteur de l'avis
         if ($this->getUser() !== $review->getUser()) {
             throw $this->createAccessDeniedException('Vous n\'êtes pas autorisé à supprimer cet avis.');
         }
@@ -89,7 +78,41 @@ class ProductController extends AbstractController
         $entityManager->remove($review);
         $entityManager->flush();
 
-        // Rediriger vers la page des détails du produit après la suppression
         return $this->redirectToRoute('product_details', ['slug' => $review->getProduct()->getSlug()]);
+    }
+
+    #[Route('/search/suggestions', name: 'search_suggestions', methods: ['GET'])]
+    public function suggestions(Request $request, ProductRepository $productRepository): JsonResponse
+    {
+        $query = trim((string) $request->query->get('q', ''));
+
+        if ($query === '') {
+            return $this->json([]);
+        }
+
+        $results = $productRepository->searchByTerm($query, 8);
+
+        $payload = array_map(static fn (Product $product): array => [
+            'id' => $product->getId(),
+            'name' => $product->getName(),
+            'slug' => $product->getSlug(),
+            'image' => $product->getImage(),
+            'price' => $product->getPrice(),
+            'url' => $request->getSchemeAndHttpHost() . '/product/' . $product->getSlug(),
+        ], $results);
+
+        return $this->json($payload);
+    }
+
+    #[Route('/search', name: 'product_search', methods: ['GET'])]
+    public function search(Request $request, ProductRepository $productRepository): Response
+    {
+        $query = trim((string) $request->query->get('q', ''));
+        $products = $query === '' ? [] : $productRepository->searchByTerm($query, 50);
+
+        return $this->render('shop/search_results.html.twig', [
+            'query' => $query,
+            'products' => $products,
+        ]);
     }
 }

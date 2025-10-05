@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use App\Repository\OrderRepository;
+use DateTimeImmutable;
 use DateTimeInterface;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -15,80 +16,71 @@ class Order
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $reference;
+    #[ORM\Column(length: 255)]
+    private ?string $reference = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $fullname;
+    #[ORM\Column(length: 255)]
+    private ?string $fullname = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $carrierName;
+    #[ORM\Column(length: 255)]
+    private ?string $carrierName = null;
 
     #[ORM\Column(type: 'float')]
-    private $carrierPrice;
+    private ?float $carrierPrice = null;
 
     #[ORM\Column(type: 'text')]
-    private $deliveryAddress;
+    private ?string $deliveryAddress = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $isPaid = false;
+    private bool $isPaid = false;
 
-    #[ORM\Column(type: 'datetime', name: 'createdAt')]
-    private $createdAt;
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $createdAt = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    private $moreInformations;
+    private ?string $moreInformations = null;
 
     #[ORM\OneToMany(mappedBy: 'orders', targetEntity: OrderDetails::class)]
-    private $orderDetails;
+    private Collection $orderDetails;
 
     #[ORM\ManyToOne(targetEntity: User::class, inversedBy: 'orders')]
     #[ORM\JoinColumn(nullable: false)]
-    private $user;
+    private ?User $user = null;
 
     #[ORM\Column(type: 'integer')]
-    private $quantity;
+    private ?int $quantity = null;
 
     #[ORM\Column(type: 'float')]
-    private $subTotalHT;
+    private ?float $subTotalHT = null;
 
     #[ORM\Column(type: 'float')]
-    private $taxe;
+    private ?float $taxe = null;
 
     #[ORM\Column(type: 'float')]
-    private $subTotalTTC;
+    private ?float $subTotalTTC = null;
 
-    #[ORM\Column(type: 'string', length: 255, nullable: true)]
-    private $StripeCheckoutSessionId;
+    #[ORM\Column(length: 255, nullable: true)]
+    private ?string $StripeCheckoutSessionId = null;
 
-    #[Pure] public function __construct()
+    #[Pure]
+    public function __construct()
     {
         $this->orderDetails = new ArrayCollection();
     }
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getReference(): ?string
     {
         return $this->reference;
     }
 
-    /**
-     * @param string $reference
-     * @return $this
-     */
     public function setReference(string $reference): self
     {
         $this->reference = $reference;
@@ -96,18 +88,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getFullname(): ?string
     {
         return $this->fullname;
     }
 
-    /**
-     * @param string $fullname
-     * @return $this
-     */
     public function setFullname(string $fullname): self
     {
         $this->fullname = $fullname;
@@ -115,18 +100,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getCarrierName(): ?string
     {
         return $this->carrierName;
     }
 
-    /**
-     * @param string $carrierName
-     * @return $this
-     */
     public function setCarrierName(string $carrierName): self
     {
         $this->carrierName = $carrierName;
@@ -134,18 +112,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getCarrierPrice(): ?float
     {
         return $this->carrierPrice;
     }
 
-    /**
-     * @param float $carrierPrice
-     * @return $this
-     */
     public function setCarrierPrice(float $carrierPrice): self
     {
         $this->carrierPrice = $carrierPrice;
@@ -153,18 +124,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDeliveryAddress(): ?string
     {
         return $this->deliveryAddress;
     }
 
-    /**
-     * @param string $deliveryAddress
-     * @return $this
-     */
     public function setDeliveryAddress(string $deliveryAddress): self
     {
         $this->deliveryAddress = $deliveryAddress;
@@ -172,18 +136,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
-    public function getIsPaid(): ?bool
+    public function getIsPaid(): bool
     {
         return $this->isPaid;
     }
 
-    /**
-     * @param bool $isPaid
-     * @return $this
-     */
     public function setIsPaid(bool $isPaid): self
     {
         $this->isPaid = $isPaid;
@@ -191,18 +148,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return DateTimeInterface|null
-     */
     public function getCreatedAt(): ?DateTimeInterface
     {
         return $this->createdAt;
     }
 
-    /**
-     * @param DateTimeInterface $createdAt
-     * @return $this
-     */
     public function setCreatedAt(DateTimeInterface $createdAt): self
     {
         $this->createdAt = $createdAt;
@@ -210,18 +160,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getMoreInformations(): ?string
     {
         return $this->moreInformations;
     }
 
-    /**
-     * @param string|null $moreInformations
-     * @return $this
-     */
     public function setMoreInformations(?string $moreInformations): self
     {
         $this->moreInformations = $moreInformations;
@@ -230,34 +173,25 @@ class Order
     }
 
     /**
-     * @return Collection
+     * @return Collection<int, OrderDetails>
      */
     public function getOrderDetails(): Collection
     {
         return $this->orderDetails;
     }
 
-    /**
-     * @param OrderDetails $orderDetail
-     * @return $this
-     */
     public function addOrderDetail(OrderDetails $orderDetail): self
     {
         if (!$this->orderDetails->contains($orderDetail)) {
-            $this->orderDetails[] = $orderDetail;
+            $this->orderDetails->add($orderDetail);
             $orderDetail->setOrders($this);
         }
 
         return $this;
     }
 
-    /**
-     * @param OrderDetails $orderDetail
-     * @return $this
-     */
     public function removeOrderDetail(OrderDetails $orderDetail): self
     {
-        // set the owning side to null (unless already changed)
         if ($this->orderDetails->removeElement($orderDetail) && $orderDetail->getOrders() === $this) {
             $orderDetail->setOrders(null);
         }
@@ -265,18 +199,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return User|null
-     */
     public function getUser(): ?User
     {
         return $this->user;
     }
 
-    /**
-     * @param User|null $user
-     * @return $this
-     */
     public function setUser(?User $user): self
     {
         $this->user = $user;
@@ -284,18 +211,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return int|null
-     */
     public function getQuantity(): ?int
     {
         return $this->quantity;
     }
 
-    /**
-     * @param int $quantity
-     * @return $this
-     */
     public function setQuantity(int $quantity): self
     {
         $this->quantity = $quantity;
@@ -303,18 +223,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getSubTotalHT(): ?float
     {
         return $this->subTotalHT;
     }
 
-    /**
-     * @param float $subTotalHT
-     * @return $this
-     */
     public function setSubTotalHT(float $subTotalHT): self
     {
         $this->subTotalHT = $subTotalHT;
@@ -322,18 +235,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getTaxe(): ?float
     {
         return $this->taxe;
     }
 
-    /**
-     * @param float $taxe
-     * @return $this
-     */
     public function setTaxe(float $taxe): self
     {
         $this->taxe = $taxe;
@@ -341,18 +247,11 @@ class Order
         return $this;
     }
 
-    /**
-     * @return float|null
-     */
     public function getSubTotalTTC(): ?float
     {
         return $this->subTotalTTC;
     }
 
-    /**
-     * @param float $subTotalTTC
-     * @return $this
-     */
     public function setSubTotalTTC(float $subTotalTTC): self
     {
         $this->subTotalTTC = $subTotalTTC;

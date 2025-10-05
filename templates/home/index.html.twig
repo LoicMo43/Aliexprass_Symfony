@@ -2,6 +2,11 @@
 
 {% block title %} AliExprass Shopping ! {% endblock title %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/assets/home.css') }}">
+{% endblock %}
+
 {% block body %}
 
     {% if homeSlider %}
@@ -11,70 +16,28 @@
     {% endif %}
 
     <div class="container">
-        <div class="section small_pt pb_70">
-            <div class="container">
-                <div class="row justify-content-center">
-                    <div class="col-md-6">
-                        <div class="heading_s1 text-center">
-                            <h2>Produits exclusifs</h2>
-                        </div>
-                    </div>
+        <div
+            id="react-home-root"
+            data-endpoint="{{ path('api_products') }}"
+            data-currency="EUR"
+        >
+            <div class="react-home-fallback text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Chargement...</span>
                 </div>
-                <div class="row">
-                    <div class="col-12">
-                        <div class="tab-style1">
-                            <ul class="nav nav-tabs justify-content-center" role="tablist">
-                                <li class="nav-item">
-                                    <a class="nav-link active" id="arrival-tab" data-toggle="tab" href="#arrival" role="tab" aria-controls="arrival" aria-selected="true">Nouvel arrivage</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="sellers-tab" data-toggle="tab" href="#sellers" role="tab" aria-controls="sellers" aria-selected="false">Meilleures ventes</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="featured-tab" data-toggle="tab" href="#featured" role="tab" aria-controls="featured" aria-selected="false">En vedette</a>
-                                </li>
-                                <li class="nav-item">
-                                    <a class="nav-link" id="specialoffer-tab" data-toggle="tab" href="#specialoffer" role="tab" aria-controls="specialoffer" aria-selected="false">Offre spéciale</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div class="tab-content">
-                            <div class="tab-pane fade show active" id="arrival" role="tabpanel" aria-labelledby="arrival-tab">
-                                <div class="row shop_container">
-                                    {% for product in productNewArrival %}
-                                        {{ include('partials/product.html.twig',{'product': product}) }}
-                                    {% endfor %}
-                                </div>
-                                {{ knp_pagination_render(productNewArrival, 'partials/pagination.html.twig')}}
-                            </div>
-                            <div class="tab-pane fade" id="sellers" role="tabpanel" aria-labelledby="sellers-tab">
-                                <div class="row shop_container">
-                                    {% for product in productBestSeller %}
-                                        {{ include('partials/product.html.twig',{'product': product}) }}
-                                    {% endfor %}
-                                </div>
-                                {{ knp_pagination_render(productBestSeller, 'partials/pagination.html.twig')}}
-                            </div>
-                            <div class="tab-pane fade" id="featured" role="tabpanel" aria-labelledby="featured-tab">
-                                <div class="row shop_container">
-                                    {% for product in productFeatured %}
-                                        {{ include('partials/product.html.twig',{'product': product}) }}
-                                    {% endfor %}
-                                </div>
-                                {{ knp_pagination_render(productFeatured, 'partials/pagination.html.twig')}}
-                            </div>
-                            <div class="tab-pane fade" id="specialoffer" role="tabpanel" aria-labelledby="specialoffer-tab">
-                                <div class="row shop_container">
-                                    {% for product in productSpecialOffer %}
-                                        {{ include('partials/product.html.twig',{'product': product}) }}
-                                    {% endfor %}
-                                </div>
-                                {{ knp_pagination_render(productSpecialOffer, 'partials/pagination.html.twig')}}
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <p class="mt-3 mb-0">Chargement de la selection de produits...</p>
             </div>
         </div>
+
+        <noscript>
+            <div class="alert alert-warning mt-4" role="status">
+                Activez JavaScript pour decouvrir notre nouvelle experience interactive.
+            </div>
+        </noscript>
     </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('build/assets/home.js') }}"></script>
 {% endblock %}

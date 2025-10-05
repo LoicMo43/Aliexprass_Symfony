@@ -2,53 +2,36 @@
 
 {% block title %} Shop {% endblock %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('build/assets/home.css') }}">
+{% endblock %}
+
 {% block body %}
     {{ include("partials/title_section.html.twig", {'name':'Shop'}) }}
-    <div class="section">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-9">
-                    <div class="row shop_container">
-                        {% if products is empty %}
-                            <p class="m-5">Désolé, aucun produit ne correspond à votre recherche !</p>
-                        {% endif %}
-                        {% for product in products %}
-                            {{ include('partials/product.html.twig',{'product': product}) }}
-                        {% endfor %}
-                    </div>
-                    {{ knp_pagination_render(products, 'partials/pagination.html.twig')}}
+    <div class="container">
+        <div
+            id="react-shop-root"
+            data-endpoint="{{ path('api_products') }}"
+            data-currency="EUR"
+        >
+            <div class="react-home-fallback text-center py-5">
+                <div class="spinner-border text-primary" role="status">
+                    <span class="sr-only">Chargement...</span>
                 </div>
-                <div class="col-lg-3 order-lg-first mt-4 pt-2 mt-lg-0 pt-lg-0">
-                    <div class="sidebar">
-                        {{ form_start(search) }}
-                        <div class="widget">
-                            <h5 class="widget_title">Categories</h5>
-                            {{ form_row(search.categories) }}
-                        </div>
-                        <div class="widget">
-                            <h5 class="widget_title">Prix</h5>
-                            <div class="form-row">
-                                <div class="col-md-6">
-                                    {{ form_row(search.minprice) }}
-                                </div>
-                                <div class="col-md-6">
-                                    {{ form_row(search.maxprice) }}
-                                </div>
-                            </div>
-                        </div>
-                        <div class="widget">
-                            <h5 class="widget_title">Tags</h5>
-                            {{ form_row(search.tags) }}
-                        </div>
-                        <button class="btn btn-border-fill btn-block"> Search</button>
-                        {{ form_end(search) }}
-                    </div>
-                </div>
+                <p class="mt-3 mb-0">Chargement de la boutique interactive...</p>
             </div>
         </div>
-    </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.3.min.js" integrity="sha256-pvPw+upLPUjgMXY0G+8O0xUf+/Im1MZjXxxgOcBQBXU=" crossorigin="anonymous"></script>
-    <script src="/assets/js/isotope.min.js"></script>
-    <script src="/assets/js/archive-products.js"></script>
+        <noscript>
+            <div class="alert alert-warning mt-4" role="status">
+                Activez JavaScript pour profiter de la navigation enrichie de la boutique.
+            </div>
+        </noscript>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="module" src="{{ asset('build/assets/shop.js') }}"></script>
 {% endblock %}

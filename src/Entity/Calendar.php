@@ -11,32 +11,32 @@ class Calendar
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
-
-    #[ORM\Column(type: 'datetime')]
-    private $start;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
     #[ORM\Column(type: 'datetime')]
-    private $end;
+    private ?DateTimeInterface $start = null;
+
+    #[ORM\Column(type: 'datetime')]
+    private ?DateTimeInterface $end = null;
 
     #[ORM\Column(type: 'text')]
-    private $description;
+    private ?string $description = null;
 
     #[ORM\Column(type: 'boolean')]
-    private $all_day;
+    private bool $all_day = false;
 
-    #[ORM\Column(type: 'string', length: 7)]
-    private $background_color;
+    #[ORM\Column(length: 7)]
+    private ?string $background_color = null;
 
-    #[ORM\Column(type: 'string', length: 7)]
-    private $border_color;
+    #[ORM\Column(length: 7)]
+    private ?string $border_color = null;
 
-    #[ORM\Column(type: 'string', length: 7)]
-    private $text_color;
+    #[ORM\Column(length: 7)]
+    private ?string $text_color = null;
 
     public function getId(): ?int
     {
@@ -91,7 +91,7 @@ class Calendar
         return $this;
     }
 
-    public function getAllDay(): ?bool
+    public function getAllDay(): bool
     {
         return $this->all_day;
     }

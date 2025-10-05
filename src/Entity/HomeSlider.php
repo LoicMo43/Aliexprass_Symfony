@@ -10,47 +10,37 @@ class HomeSlider
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column(type: 'integer')]
-    private $id;
+    #[ORM\Column]
+    private ?int $id = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $title;
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $description;
+    #[ORM\Column(length: 255)]
+    private ?string $description = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $buttonMessage;
+    #[ORM\Column(length: 255)]
+    private ?string $buttonMessage = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $buttonURL;
+    #[ORM\Column(length: 255)]
+    private ?string $buttonURL = null;
 
-    #[ORM\Column(type: 'string', length: 255)]
-    private $image;
+    #[ORM\Column(length: 255)]
+    private ?string $image = null;
 
     #[ORM\Column(type: 'boolean', nullable: true)]
-    private $isDisplayed;
+    private ?bool $isDisplayed = null;
 
-    /**
-     * @return int|null
-     */
     public function getId(): ?int
     {
         return $this->id;
     }
 
-    /**
-     * @return string|null
-     */
     public function getTitle(): ?string
     {
         return $this->title;
     }
 
-    /**
-     * @param string $title
-     * @return $this
-     */
     public function setTitle(string $title): self
     {
         $this->title = $title;
@@ -58,18 +48,11 @@ class HomeSlider
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getDescription(): ?string
     {
         return $this->description;
     }
 
-    /**
-     * @param string $description
-     * @return $this
-     */
     public function setDescription(string $description): self
     {
         $this->description = $description;
@@ -77,18 +60,11 @@ class HomeSlider
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getButtonMessage(): ?string
     {
         return $this->buttonMessage;
     }
 
-    /**
-     * @param string $buttonMessage
-     * @return $this
-     */
     public function setButtonMessage(string $buttonMessage): self
     {
         $this->buttonMessage = $buttonMessage;
@@ -96,18 +72,11 @@ class HomeSlider
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getButtonURL(): ?string
     {
         return $this->buttonURL;
     }
 
-    /**
-     * @param string $buttonURL
-     * @return $this
-     */
     public function setButtonURL(string $buttonURL): self
     {
         $this->buttonURL = $buttonURL;
@@ -115,18 +84,11 @@ class HomeSlider
         return $this;
     }
 
-    /**
-     * @return string|null
-     */
     public function getImage(): ?string
     {
         return $this->image;
     }
 
-    /**
-     * @param string $image
-     * @return $this
-     */
     public function setImage(string $image): self
     {
         $this->image = $image;
@@ -134,18 +96,11 @@ class HomeSlider
         return $this;
     }
 
-    /**
-     * @return bool|null
-     */
     public function getIsDisplayed(): ?bool
     {
         return $this->isDisplayed;
     }
 
-    /**
-     * @param bool|null $isDisplayed
-     * @return $this
-     */
     public function setIsDisplayed(?bool $isDisplayed): self
     {
         $this->isDisplayed = $isDisplayed;

@@ -1,0 +1,34 @@
+{% set input_id = 'header-search-input-' ~ random() %}
+{% set wrap_id = 'header-search-panel-' ~ random() %}
+<div class="header-search js-header-search" data-endpoint="{{ endpoint }}" data-placeholder="{{ placeholder }}">
+    <button
+        class="nav-link header-search-toggle js-header-search-open"
+        type="button"
+        aria-haspopup="dialog"
+        aria-expanded="false"
+        aria-controls="{{ wrap_id }}"
+    >
+        <i class="linearicons-magnifier" aria-hidden="true"></i>
+        <span class="sr-only">{{ placeholder }}</span>
+    </button>
+    <div class="search_wrap" id="{{ wrap_id }}" role="dialog" aria-modal="true" aria-hidden="true">
+        <button class="close-search js-header-search-close" type="button" aria-label="Fermer la recherche">
+            <i class="ion-ios-close-empty" aria-hidden="true"></i>
+        </button>
+        <form action="{{ path('product_search') }}" method="get" class="header-search__form">
+            <label for="{{ input_id }}" class="sr-only">{{ placeholder }}</label>
+            <input
+                id="{{ input_id }}"
+                class="form-control js-header-search-input"
+                type="search"
+                name="q"
+                autocomplete="off"
+            >
+            <button type="submit" class="search_icon" aria-label="Lancer la recherche">
+                <i class="ion-ios-search-strong" aria-hidden="true"></i>
+            </button>
+        </form>
+        <div class="search_suggestions js-header-search-results" hidden></div>
+    </div>
+    <div class="search_overlay js-header-search-close" aria-hidden="true"></div>
+</div>
