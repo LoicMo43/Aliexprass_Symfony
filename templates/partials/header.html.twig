@@ -1,132 +1,86 @@
-<div class="preloader">
-    <div class="preloader-content">
-        <span></span>
-        <span></span>
-        <span></span>
-    </div>
-</div>
+﻿{% set cartData = app.session.get('cartData') %}
+{% set cartItems = [] %}
 
-<header class="header_wrap fixed-top header_with_topbar">
-    <div class="top-header">
-        <div class="container">
-            <div class="row align-items-center">
-                <div class="col-md-6">
-                    <div class="d-flex align-items-center justify-content-center justify-content-md-start">
-                        <div class="lng_dropdown mr-2">
-                            <label>
-                                <select name="countries" class="custome_select">
-                                    <option value='fn' data-image="/assets/images/fn.png" data-title="France">France
-                                    </option>
-                                    <option value='en' data-image="/assets/images/eng.png" data-title="English">English
-                                    </option>
-                                    <option value='us' data-image="/assets/images/us.png" data-title="United States">United
-                                        States
-                                    </option>
-                                </select>
-                            </label>
-                        </div>
-                        <div class="mr-3">
-                            <label>
-                                <select name="countries" class="custome_select">
-                                    <option value='EUR' data-title="EUR">EUR</option>
-                                    <option value='USD' data-title="USD">USD</option>
-                                    <option value='GBR' data-title="GBR">GBR</option>
-                                </select>
-                            </label>
-                        </div>
-                        <ul class="contact_detail text-center text-lg-left">
-                            <li><i class="ti-mobile"></i><span>00-00-00-00-00</span></li>
-                        </ul>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="text-center text-md-right">
-                        <ul class="header_list">
-                            {% if app.user %}
-                                <li><a href=""><i class="ti-control-shuffle"></i><span>Comparer</span></a></li>
-                                <li><a href=""><i class="ti-heart"></i><span>Liste de souhaits</span></a></li>
-                                <li><a href="{{ path('account') }}"><i class="ti-user"></i><span>Mon compte</span></a></li>
-                                <li><a href="{{ path('app_logout') }}"><i class="fas fa-sign-out-alt"></i><span>Déconnexion</span></a></li>
-                            {% else %}
-                                <li><a href="{{ path('app_login') }}"><i class="ti-user"></i><span>Connexion</span></a></li>
-                                <li><a href="{{ path('app_register') }}"><i class="fas fa-sign-in-alt"></i><span>Inscription</span></a>
-                                </li>
-                            {% endif %}
-                        </ul>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="bottom_header dark_skin main_menu_uppercase">
-        <div class="container">
-            <nav class="navbar navbar-expand-lg">
-                <a class="navbar-brand" href="{{ path('home') }}">
-                    <img class="logo_light" src="/assets/images/logo_light.png" alt="logo"/>
-                    <img class="logo_dark" src="/assets/images/logo_dark.png" alt="logo"/>
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse"
-                        data-target="#navbarSupportedContent" aria-expanded="false">
-                    <span class="ion-android-menu"></span>
-                </button>
-                <div class="collapse navbar-collapse justify-content-end" id="navbarSupportedContent">
-                    <ul class="navbar-nav">
-                        <li class="dropdown">
-                            <a class="nav-link" href="{{ path('home') }}">Accueil</a>
-                        </li>
-                        <li class="">
-                            <a class=" nav-link" href="{{ path('shop') }}">Boutique</a>
-                        </li>
-                        <li><a class="nav-link nav_item" href="#">Nous contacter</a></li>
-                    </ul>
-                </div>
-                <ul class="navbar-nav attr-nav align-items-center">
-                    <li class="nav-item header-search-item">
-                        {{ component('header_search', {
-                            endpoint: path('search_suggestions'),
-                            placeholder: 'Rechercher un produit'
-                        }) }}
-                    </li>
-                    <li class="dropdown cart_dropdown"><a class="nav-link cart_trigger" href="#" data-toggle="dropdown"><i
-                                    class="linearicons-cart"></i><span class="cart_count">
-                                {% if app.session.get('cart') %}
-                                    {{ app.session.get('cartData').data.quantity_cart }}
-                                {% else %}
-                                    0
-                                {% endif %}
-                            </span></a>
+{% if cartData and cartData.products is defined %}
+    {% for element in cartData.products %}
+        {% set cartItems = cartItems|merge([{ 
+            id: element.product.id,
+            name: element.product.name,
+            image: element.product.image,
+            quantity: element.quantity,
+            price: element.product.price,
+            deleteUrl: path('cart_delete', {'id': element.product.id})
+        }]) %}
+    {% endfor %}
+{% endif %}
 
-                        <div class="cart_box dropdown-menu dropdown-menu-right">
-                            <ul class="cart_list">
-                                 {% if (app.session.get('cart')) %}
-                                    {% for element in app.session.get('cartData').products %}
-                                        <li>
-                                            <a href="{{ path('cart_delete', {'id': element.product.id}) }}" class="item_remove"><i class="ion-close"></i></a>
-                                            <a href="#"><img src="/assets/uploads/products/{{ element.product.image }}" alt="{{ element.product.name }}">{{ element.product.name }}</a>
-                                            <span class="cart_quantity"> {{ element.quantity }} x <span class="cart_amount"> <span class="price_symbole">$</span></span>{{ element.product.price / 100 }}</span>
-                                        </li>
-                                    {% endfor %}
+{% set cartCount = 0 %}
+{% set cartSubtotal = 0 %}
 
-                                <div class="cart_footer">
-                                    <p class="cart_total"><strong>Subtotal TTC:</strong> <span class="cart_price"> <span
-                                                    class="price_symbole">$</span></span> {{ app.session.get('cartData').data.subTotalTTC }} </p>
-                                    <p class="cart_buttons"><a href="{{ path('cart') }}" class="btn btn-fill-line rounded-0 view-cart">View
-                                            Cart</a><a href="{{ path("checkout") }}" class="btn btn-fill-out rounded-0 checkout">Checkout</a>
-                                    </p>
-                                </div>
-                                {% else %}
-                                    <li>Panier vide</li>
-                                {% endif %}
+{% if cartData and cartData.data is defined %}
+    {% set cartCount = cartData.data.quantity_cart|default(0) %}
+    {% set cartSubtotal = cartData.data.subTotalTTC|default(0) %}
+{% endif %}
 
-                            </ul>
-                    </div>
-                </li>
-            </ul>
-            </nav>
-        </div>
-    </div>
-</header>
+{% set userProps = app.user ? {
+    isAuthenticated: true,
+    authenticatedLinks: [
+        { label: 'Comparer', href: '#', icon: 'ti-control-shuffle' },
+        { label: 'Liste de souhaits', href: '#', icon: 'ti-heart' },
+        { label: 'Mon compte', href: path('account'), icon: 'ti-user' },
+        { label: 'Deconnexion', href: path('app_logout'), icon: 'fas fa-sign-out-alt' }
+    ],
+    guestLinks: []
+} : {
+    isAuthenticated: false,
+    authenticatedLinks: [],
+    guestLinks: [
+        { label: 'Connexion', href: path('app_login'), icon: 'ti-user' },
+        { label: 'Inscription', href: path('app_register'), icon: 'fas fa-sign-in-alt' }
+    ]
+} %}
 
+{% set headerProps = {
+    brandUrl: path('home'),
+    logos: {
+        light: '/assets/images/logo_light.png',
+        dark: '/assets/images/logo_dark.png'
+    },
+    languages: [
+        { value: 'fn', label: 'France', image: '/assets/images/fn.png' },
+        { value: 'en', label: 'English', image: '/assets/images/eng.png' },
+        { value: 'us', label: 'United States', image: '/assets/images/us.png' }
+    ],
+    currencies: [
+        { value: 'EUR', label: 'EUR' },
+        { value: 'USD', label: 'USD' },
+        { value: 'GBR', label: 'GBR' }
+    ],
+    defaultLanguage: 'fn',
+    defaultCurrency: 'EUR',
+    contactNumber: '00-00-00-00-00',
+    navLinks: [
+        { label: 'Accueil', href: path('home'), itemClass: 'dropdown', linkClass: 'nav-link' },
+        { label: 'Boutique', href: path('shop'), itemClass: '', linkClass: 'nav-link' },
+        { label: 'Nous contacter', href: '#', itemClass: '', linkClass: 'nav-link nav_item' }
+    ],
+    user: userProps,
+    search: {
+        endpoint: path('search_suggestions'),
+        placeholder: 'Rechercher un produit',
+        action: path('product_search'),
+        inputName: 'q'
+    },
+    cart: {
+        items: cartItems,
+        count: cartCount,
+        subtotal: cartSubtotal,
+        currencyCode: 'EUR',
+        cartUrl: path('cart'),
+        checkoutUrl: path('checkout')
+    }
+} %}
 
+{% set headerPropsJson = headerProps|json_encode(constant('JSON_UNESCAPED_UNICODE')) %}
 
-
+<div id="react-header-root" data-props="{{ headerPropsJson|e('html_attr') }}"></div>

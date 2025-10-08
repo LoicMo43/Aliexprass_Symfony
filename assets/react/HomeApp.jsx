@@ -50,7 +50,7 @@ export default function HomeApp({ endpoint, currency }) {
     <div className="react-home">
       <div className="react-home__surface">
         <header className="react-home__header">
-          <h2 className="react-home__title">Decouvrez notre selection</h2>
+          <h2 className="react-home__title">Découvrez notre selection</h2>
           <p className="react-home__subtitle">
             Filtrez et explorez les meilleures offres en direct grace a notre interface interactive.
           </p>
