@@ -22,8 +22,14 @@ class OrderDetails
     #[ORM\Column(type: 'integer')]
     private ?int $quantity = null;
 
+    #[ORM\Column(name: 'sub_total_ht', type: 'float')]
+    private float $subTotalHT = 0.0;
+
+    #[ORM\Column(name: 'sub_total_ttc', type: 'float')]
+    private float $subTotalTTC = 0.0;
+
     #[ORM\Column(type: 'float')]
-    private ?float $subTotal = null;
+    private float $taxe = 0.0;
 
     #[ORM\ManyToOne(targetEntity: Order::class, inversedBy: 'orderDetails')]
     #[ORM\JoinColumn(nullable: false)]
@@ -70,14 +76,38 @@ class OrderDetails
         return $this;
     }
 
-    public function getSubTotal(): ?float
+    public function getSubTotalHT(): float
     {
-        return $this->subTotal;
+        return $this->subTotalHT;
     }
 
-    public function setSubTotal(float $subTotal): self
+    public function setSubTotalHT(float $subTotalHT): self
     {
-        $this->subTotal = $subTotal;
+        $this->subTotalHT = $subTotalHT;
+
+        return $this;
+    }
+
+    public function getSubTotalTTC(): float
+    {
+        return $this->subTotalTTC;
+    }
+
+    public function setSubTotalTTC(float $subTotalTTC): self
+    {
+        $this->subTotalTTC = $subTotalTTC;
+
+        return $this;
+    }
+
+    public function getTaxe(): float
+    {
+        return $this->taxe;
+    }
+
+    public function setTaxe(float $taxe): self
+    {
+        $this->taxe = $taxe;
 
         return $this;
     }

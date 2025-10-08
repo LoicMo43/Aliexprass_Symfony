@@ -318,20 +318,10 @@ const Header = (props) => {
 
   const quickActions = useMemo(() => {
     if (user.isAuthenticated) {
-      const preferredLabels = ["Comparer", "Liste de souhaits"];
-      const preferred =
-        (user.authenticatedLinks || []).filter((link) =>
-          preferredLabels.includes((link.label || "").trim())
-        );
-
-      if (preferred.length) {
-        return preferred.slice(0, 2);
-      }
-
-      return (user.authenticatedLinks || []).slice(0, 2);
+      return Array.isArray(user.authenticatedLinks) ? user.authenticatedLinks : [];
     }
 
-    return (user.guestLinks || []).slice(0, 2);
+    return Array.isArray(user.guestLinks) ? user.guestLinks : [];
   }, [user]);
 
   useEffect(() => {
@@ -426,6 +416,11 @@ const Header = (props) => {
                 <i className="ti-mobile" aria-hidden="true"></i>
                 <span>{contactNumber}</span>
               </a>
+            </div>
+            <div className="neo-header__top-right">
+              <span className="neo-header__top-highlight">
+                Livraison offerte des 50€ - Support premium 7j/7
+              </span>
             </div>
           </div>
         </div>

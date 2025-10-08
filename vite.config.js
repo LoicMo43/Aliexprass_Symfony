@@ -13,7 +13,9 @@ export default defineConfig({
         home: resolve(__dirname, "assets/react/home.jsx"),
         shop: resolve(__dirname, "assets/react/shop.jsx"),
         product: resolve(__dirname, "assets/react/product.jsx"),
-        header: resolve(__dirname, "assets/react/header.jsx")
+        header: resolve(__dirname, "assets/react/header.jsx"),
+        login: resolve(__dirname, "assets/react/login.jsx"),
+        register: resolve(__dirname, "assets/react/register.jsx")
       },
       output: {
         entryFileNames: "assets/[name].js",
